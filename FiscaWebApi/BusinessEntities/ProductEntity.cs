@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessEntities
 {
-    public class Class1
+    public class ProductEntity
     {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
     }
 }
