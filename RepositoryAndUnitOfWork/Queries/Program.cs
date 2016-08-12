@@ -19,6 +19,7 @@ namespace Queries
                 unitOfWork.Courses.RemoveRange(author.Courses);
                 unitOfWork.Authors.Remove(author);
                 unitOfWork.Complete();
+                System.Console.Out.WriteLine(course.Author.Name);
             }
         }
     }

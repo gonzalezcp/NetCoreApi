@@ -13,3 +13,12 @@ C:\Projects\EntityFramework\Queries\Queries\obj\Debug\Queries.csproj.GenerateRes
 C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\bin\Debug\Queries.exe.config
 C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\obj\Debug\Queries.exe
 C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\obj\Debug\Queries.pdb
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\bin\Debug\Queries.exe
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\bin\Debug\Queries.pdb
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\bin\Debug\EntityFramework.dll
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\bin\Debug\EntityFramework.xml
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\obj\Debug\Queries.csprojResolveAssemblyReference.cache
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\obj\Debug\Queries.Migrations.InitialMigration.resources
+C:\Users\pcasco\Documents\Visual Studio 2015\Projects\NetCoreApi\RepositoryAndUnitOfWork\Queries\obj\Debug\Queries.csproj.GenerateResource.Cache
