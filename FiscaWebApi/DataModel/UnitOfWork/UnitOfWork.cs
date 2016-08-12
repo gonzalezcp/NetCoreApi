@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity.Validation;
 using DataModel.GenericRepository;
+using System.Diagnostics;
 
 namespace DataModel.UnitOfWork
 {

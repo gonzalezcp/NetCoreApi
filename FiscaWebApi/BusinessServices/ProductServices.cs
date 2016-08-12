@@ -61,17 +61,13 @@ namespace BusinessServices
         public int CreateProduct(BusinessEntities.ProductEntity productEntity)
         {
             //using (var scope = new TransactionScope())
-            using (var scope = new TransactionScope())
+            var product = new Product
             {
-                var product = new Product
-                {
-                    ProductName = productEntity.ProductName
-                };
-                _unitOfWork.ProductRepository.Insert(product);
-                _unitOfWork.Save();
-                scope.Complete();
-                return product.ProductId;
-            }
+                ProductName = productEntity.ProductName
+            };
+            _unitOfWork.ProductRepository.Insert(product);
+            _unitOfWork.Save();
+            return product.ProductId;
         }
 
         /// <summary>
@@ -85,17 +81,14 @@ namespace BusinessServices
             var success = false;
             if (productEntity != null)
             {
-                using (var scope = new TransactionScope())
+
+                var product = _unitOfWork.ProductRepository.GetByID(productId);
+                if (product != null)
                 {
-                    var product = _unitOfWork.ProductRepository.GetByID(productId);
-                    if (product != null)
-                    {
-                        product.ProductName = productEntity.ProductName;
-                        _unitOfWork.ProductRepository.Update(product);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
-                    }
+                    product.ProductName = productEntity.ProductName;
+                    _unitOfWork.ProductRepository.Update(product);
+                    _unitOfWork.Save();
+                    success = true;
                 }
             }
             return success;
@@ -111,17 +104,14 @@ namespace BusinessServices
             var success = false;
             if (productId > 0)
             {
-                using (var scope = new TransactionScope())
-                {
-                    var product = _unitOfWork.ProductRepository.GetByID(productId);
-                    if (product != null)
-                    {
 
-                        _unitOfWork.ProductRepository.Delete(product);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
-                    }
+                var product = _unitOfWork.ProductRepository.GetByID(productId);
+                if (product != null)
+                {
+
+                    _unitOfWork.ProductRepository.Delete(product);
+                    _unitOfWork.Save();
+                    success = true;
                 }
             }
             return success;
