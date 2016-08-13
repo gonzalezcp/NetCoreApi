@@ -16,8 +16,12 @@ namespace Domain
             {
                 // Example1
                 var product = unitOfWork.Products.Get(1);
-
+                var users = unitOfWork.User.GetAll();
                 unitOfWork.Complete();
+                foreach (User u in users)
+                {
+                    Console.WriteLine(u.Name);
+                }
             }
         }
     }
