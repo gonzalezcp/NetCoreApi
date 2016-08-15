@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFTestService", "EFTestService\EFTestService.csproj", "{A6840F92-9559-4C30-A94F-BFEFC3F35F35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFTestService.Tests", "EFTestService.Tests\EFTestService.Tests.csproj", "{54665745-801C-4EB3-AF66-B90072844A8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{AF68DFBD-8AF2-48BD-A6D3-1A17091FA423}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6840F92-9559-4C30-A94F-BFEFC3F35F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6840F92-9559-4C30-A94F-BFEFC3F35F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6840F92-9559-4C30-A94F-BFEFC3F35F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6840F92-9559-4C30-A94F-BFEFC3F35F35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54665745-801C-4EB3-AF66-B90072844A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54665745-801C-4EB3-AF66-B90072844A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54665745-801C-4EB3-AF66-B90072844A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54665745-801C-4EB3-AF66-B90072844A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF68DFBD-8AF2-48BD-A6D3-1A17091FA423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF68DFBD-8AF2-48BD-A6D3-1A17091FA423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF68DFBD-8AF2-48BD-A6D3-1A17091FA423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF68DFBD-8AF2-48BD-A6D3-1A17091FA423}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
