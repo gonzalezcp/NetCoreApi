@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataModel
 {
-    class BlogService
+    public class BlogService
     {
         private BloggingEntities _context;
 
