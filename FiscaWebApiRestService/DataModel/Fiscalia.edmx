@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="fiscaliaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="colaDistribucion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="idTipoDistribucion" Type="int" Nullable="false" />
+          <Property Name="posicion" Type="int" />
+          <Property Name="puntajeRestante" Type="int" />
+          <Property Name="habilitado" Type="bit" />
+          <Property Name="pasada" Type="int" />
+          <Property Name="posicionActual" Type="int" />
+          <Property Name="fechaAlta" Type="datetime" />
+          <Property Name="fechaBorrado" Type="datetime" />
+        </EntityType>
+        <EntityType Name="colaDistribucionLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idColaDistribucion" Type="int" />
+          <Property Name="idJuicio" Type="int" />
+          <Property Name="montoJuicio" Type="money" />
+          <Property Name="montoPromedio" Type="money" />
+          <Property Name="puntajeRestante" Type="int" />
+          <Property Name="puntajeRestado" Type="int" />
+          <Property Name="puntajeRestanteActualizado" Type="int" />
+          <Property Name="habilitado" Type="bit" />
+          <Property Name="pasada" Type="int" />
+          <Property Name="posicionActual" Type="int" />
+          <Property Name="puntajeApoderado" Type="int" />
+          <Property Name="fecha" Type="datetime" />
+          <Property Name="numeroTitulo" Type="varchar" MaxLength="25" />
+          <Property Name="idTipoEvento" Type="int" />
+        </EntityType>
+        <EntityType Name="tiposDistribuciones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipoDistribucion" Type="varchar" MaxLength="100" />
+          <Property Name="montoPromedio" Type="money" />
+          <Property Name="distribucionPorCola" Type="bit" />
+        </EntityType>
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sid" Type="varbinary" MaxLength="85" />
+          <Property Name="apellido" Type="varchar" MaxLength="100" />
+          <Property Name="nombres" Type="varchar" MaxLength="100" />
+          <Property Name="idTipoUsuario" Type="int" />
+          <Property Name="idSubsecretaria" Type="int" />
+          <Property Name="activo" Type="bit" />
+          <Property Name="motivoBaja" Type="text" />
+          <Property Name="crearADUser" Type="bit" Nullable="false" />
+          <Property Name="ultimoLogin" Type="datetime" />
+          <Property Name="ultimoLogout" Type="datetime" />
+          <Property Name="fechaBaja" Type="datetime" />
+          <Property Name="userName" Type="varchar" MaxLength="65" />
+          <Property Name="idUsuarioBaja" Type="int" />
+          <Property Name="codigoSeguridad" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="tratamiento" Type="varchar" MaxLength="6" />
+        </EntityType>
+        <Association Name="FK_colaDistribucion_tiposDistribuciones">
+          <End Role="tiposDistribuciones" Type="Self.tiposDistribuciones" Multiplicity="1" />
+          <End Role="colaDistribucion" Type="Self.colaDistribucion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tiposDistribuciones">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="colaDistribucion">
+              <PropertyRef Name="idTipoDistribucion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_colaDistribucion_usuarios">
+          <End Role="usuarios" Type="Self.usuarios" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="colaDistribucion" Type="Self.colaDistribucion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuarios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="colaDistribucion">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_colaDistribucionLog_colaDistribucion">
+          <End Role="colaDistribucion" Type="Self.colaDistribucion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="colaDistribucionLog" Type="Self.colaDistribucionLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="colaDistribucion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="colaDistribucionLog">
+              <PropertyRef Name="idColaDistribucion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="fiscaliaModelStoreContainer">
+          <EntitySet Name="colaDistribucion" EntityType="Self.colaDistribucion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="colaDistribucionLog" EntityType="Self.colaDistribucionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tiposDistribuciones" EntityType="Self.tiposDistribuciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_colaDistribucion_tiposDistribuciones" Association="Self.FK_colaDistribucion_tiposDistribuciones">
+            <End Role="tiposDistribuciones" EntitySet="tiposDistribuciones" />
+            <End Role="colaDistribucion" EntitySet="colaDistribucion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_colaDistribucion_usuarios" Association="Self.FK_colaDistribucion_usuarios">
+            <End Role="usuarios" EntitySet="usuarios" />
+            <End Role="colaDistribucion" EntitySet="colaDistribucion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_colaDistribucionLog_colaDistribucion" Association="Self.FK_colaDistribucionLog_colaDistribucion">
+            <End Role="colaDistribucion" EntitySet="colaDistribucion" />
+            <End Role="colaDistribucionLog" EntitySet="colaDistribucionLog" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="fiscaliaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="colaDistribucion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idTipoDistribucion" Type="Int32" Nullable="false" />
+          <Property Name="posicion" Type="Int32" />
+          <Property Name="puntajeRestante" Type="Int32" />
+          <Property Name="habilitado" Type="Boolean" />
+          <Property Name="pasada" Type="Int32" />
+          <Property Name="posicionActual" Type="Int32" />
+          <Property Name="fechaAlta" Type="DateTime" Precision="3" />
+          <Property Name="fechaBorrado" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tiposDistribucione" Relationship="Self.FK_colaDistribucion_tiposDistribuciones" FromRole="colaDistribucion" ToRole="tiposDistribuciones" />
+          <NavigationProperty Name="colaDistribucionLogs" Relationship="Self.FK_colaDistribucionLog_colaDistribucion" FromRole="colaDistribucion" ToRole="colaDistribucionLog" />
+          <NavigationProperty Name="usuario" Relationship="fiscaliaModel.FK_colaDistribucion_usuarios" FromRole="colaDistribucion" ToRole="usuario" />
+        </EntityType>
+        <EntityType Name="colaDistribucionLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idColaDistribucion" Type="Int32" />
+          <Property Name="idJuicio" Type="Int32" />
+          <Property Name="montoJuicio" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="montoPromedio" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="puntajeRestante" Type="Int32" />
+          <Property Name="puntajeRestado" Type="Int32" />
+          <Property Name="puntajeRestanteActualizado" Type="Int32" />
+          <Property Name="habilitado" Type="Boolean" />
+          <Property Name="pasada" Type="Int32" />
+          <Property Name="posicionActual" Type="Int32" />
+          <Property Name="puntajeApoderado" Type="Int32" />
+          <Property Name="fecha" Type="DateTime" Precision="3" />
+          <Property Name="numeroTitulo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="idTipoEvento" Type="Int32" />
+          <NavigationProperty Name="colaDistribucion" Relationship="Self.FK_colaDistribucionLog_colaDistribucion" FromRole="colaDistribucionLog" ToRole="colaDistribucion" />
+        </EntityType>
+        <EntityType Name="tiposDistribucione">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipoDistribucion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="montoPromedio" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="distribucionPorCola" Type="Boolean" />
+          <NavigationProperty Name="colaDistribucions" Relationship="Self.FK_colaDistribucion_tiposDistribuciones" FromRole="tiposDistribuciones" ToRole="colaDistribucion" />
+        </EntityType>
+        <Association Name="FK_colaDistribucion_tiposDistribuciones">
+          <End Role="tiposDistribuciones" Type="Self.tiposDistribucione" Multiplicity="1" />
+          <End Role="colaDistribucion" Type="Self.colaDistribucion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tiposDistribuciones">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="colaDistribucion">
+              <PropertyRef Name="idTipoDistribucion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_colaDistribucionLog_colaDistribucion">
+          <End Role="colaDistribucion" Type="Self.colaDistribucion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="colaDistribucionLog" Type="Self.colaDistribucionLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="colaDistribucion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="colaDistribucionLog">
+              <PropertyRef Name="idColaDistribucion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="fiscaliaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="colaDistribucions" EntityType="Self.colaDistribucion" />
+          <EntitySet Name="colaDistribucionLogs" EntityType="Self.colaDistribucionLog" />
+          <EntitySet Name="tiposDistribuciones" EntityType="Self.tiposDistribucione" />
+          <AssociationSet Name="FK_colaDistribucion_tiposDistribuciones" Association="Self.FK_colaDistribucion_tiposDistribuciones">
+            <End Role="tiposDistribuciones" EntitySet="tiposDistribuciones" />
+            <End Role="colaDistribucion" EntitySet="colaDistribucions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_colaDistribucionLog_colaDistribucion" Association="Self.FK_colaDistribucionLog_colaDistribucion">
+            <End Role="colaDistribucion" EntitySet="colaDistribucions" />
+            <End Role="colaDistribucionLog" EntitySet="colaDistribucionLogs" />
+          </AssociationSet>
+          <EntitySet Name="usuarios" EntityType="fiscaliaModel.usuario" />
+          <AssociationSet Name="FK_colaDistribucion_usuarios" Association="fiscaliaModel.FK_colaDistribucion_usuarios">
+            <End Role="usuario" EntitySet="usuarios" />
+            <End Role="colaDistribucion" EntitySet="colaDistribucions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sid" Type="Binary" MaxLength="85" FixedLength="false" />
+          <Property Name="apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idTipoUsuario" Type="Int32" />
+          <Property Name="idSubsecretaria" Type="Int32" />
+          <Property Name="activo" Type="Boolean" />
+          <Property Name="motivoBaja" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="crearADUser" Type="Boolean" Nullable="false" />
+          <Property Name="ultimoLogin" Type="DateTime" Precision="3" />
+          <Property Name="ultimoLogout" Type="DateTime" Precision="3" />
+          <Property Name="fechaBaja" Type="DateTime" Precision="3" />
+          <Property Name="userName" Type="String" MaxLength="65" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuarioBaja" Type="Int32" />
+          <Property Name="codigoSeguridad" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="tratamiento" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="colaDistribucions" Relationship="fiscaliaModel.FK_colaDistribucion_usuarios" FromRole="usuario" ToRole="colaDistribucion" />
+        </EntityType>
+        <Association Name="FK_colaDistribucion_usuarios">
+          <End Type="fiscaliaModel.usuario" Role="usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fiscaliaModel.colaDistribucion" Role="colaDistribucion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="colaDistribucion">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="fiscaliaModelStoreContainer" CdmEntityContainer="fiscaliaEntities">
+          <EntitySetMapping Name="colaDistribucions">
+            <EntityTypeMapping TypeName="fiscaliaModel.colaDistribucion">
+              <MappingFragment StoreEntitySet="colaDistribucion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idTipoDistribucion" ColumnName="idTipoDistribucion" />
+                <ScalarProperty Name="posicion" ColumnName="posicion" />
+                <ScalarProperty Name="puntajeRestante" ColumnName="puntajeRestante" />
+                <ScalarProperty Name="habilitado" ColumnName="habilitado" />
+                <ScalarProperty Name="pasada" ColumnName="pasada" />
+                <ScalarProperty Name="posicionActual" ColumnName="posicionActual" />
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+                <ScalarProperty Name="fechaBorrado" ColumnName="fechaBorrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="colaDistribucionLogs">
+            <EntityTypeMapping TypeName="fiscaliaModel.colaDistribucionLog">
+              <MappingFragment StoreEntitySet="colaDistribucionLog">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idColaDistribucion" ColumnName="idColaDistribucion" />
+                <ScalarProperty Name="idJuicio" ColumnName="idJuicio" />
+                <ScalarProperty Name="montoJuicio" ColumnName="montoJuicio" />
+                <ScalarProperty Name="montoPromedio" ColumnName="montoPromedio" />
+                <ScalarProperty Name="puntajeRestante" ColumnName="puntajeRestante" />
+                <ScalarProperty Name="puntajeRestado" ColumnName="puntajeRestado" />
+                <ScalarProperty Name="puntajeRestanteActualizado" ColumnName="puntajeRestanteActualizado" />
+                <ScalarProperty Name="habilitado" ColumnName="habilitado" />
+                <ScalarProperty Name="pasada" ColumnName="pasada" />
+                <ScalarProperty Name="posicionActual" ColumnName="posicionActual" />
+                <ScalarProperty Name="puntajeApoderado" ColumnName="puntajeApoderado" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="numeroTitulo" ColumnName="numeroTitulo" />
+                <ScalarProperty Name="idTipoEvento" ColumnName="idTipoEvento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tiposDistribuciones">
+            <EntityTypeMapping TypeName="fiscaliaModel.tiposDistribucione">
+              <MappingFragment StoreEntitySet="tiposDistribuciones">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tipoDistribucion" ColumnName="tipoDistribucion" />
+                <ScalarProperty Name="montoPromedio" ColumnName="montoPromedio" />
+                <ScalarProperty Name="distribucionPorCola" ColumnName="distribucionPorCola" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuarios">
+            <EntityTypeMapping TypeName="fiscaliaModel.usuario">
+              <MappingFragment StoreEntitySet="usuarios">
+                <ScalarProperty Name="tratamiento" ColumnName="tratamiento" />
+                <ScalarProperty Name="codigoSeguridad" ColumnName="codigoSeguridad" />
+                <ScalarProperty Name="idUsuarioBaja" ColumnName="idUsuarioBaja" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="fechaBaja" ColumnName="fechaBaja" />
+                <ScalarProperty Name="ultimoLogout" ColumnName="ultimoLogout" />
+                <ScalarProperty Name="ultimoLogin" ColumnName="ultimoLogin" />
+                <ScalarProperty Name="crearADUser" ColumnName="crearADUser" />
+                <ScalarProperty Name="motivoBaja" ColumnName="motivoBaja" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="idSubsecretaria" ColumnName="idSubsecretaria" />
+                <ScalarProperty Name="idTipoUsuario" ColumnName="idTipoUsuario" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="sid" ColumnName="sid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
