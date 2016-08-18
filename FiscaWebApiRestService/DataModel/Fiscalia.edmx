@@ -40,6 +40,32 @@
           <Property Name="numeroTitulo" Type="varchar" MaxLength="25" />
           <Property Name="idTipoEvento" Type="int" />
         </EntityType>
+        <EntityType Name="personas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTipoPersona" Type="int" />
+          <Property Name="apellido" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" />
+          <Property Name="idTipoDocumento" Type="int" />
+          <Property Name="cuit" Type="varchar" MaxLength="13" />
+          <Property Name="numeroDocumento" Type="numeric" Precision="9" Scale="0" />
+          <Property Name="idEstadoCivil" Type="int" />
+          <Property Name="nacionalidad" Type="varchar" MaxLength="50" />
+          <Property Name="idTipoSociedad" Type="int" />
+          <Property Name="tipoPersoneria" Type="varchar" MaxLength="50" />
+          <Property Name="registro" Type="nchar" MaxLength="50" />
+          <Property Name="numeroSociedad" Type="nchar" MaxLength="50" />
+          <Property Name="fechaInscripcion" Type="nchar" MaxLength="50" />
+          <Property Name="tomo" Type="nchar" MaxLength="50" />
+          <Property Name="letra" Type="nchar" MaxLength="50" />
+          <Property Name="folio" Type="nchar" MaxLength="50" />
+          <Property Name="sexo" Type="bit" />
+          <Property Name="fechaAlta" Type="datetime" />
+          <Property Name="idUsuarioAlta" Type="int" />
+          <Property Name="razonSocial" Type="varchar" MaxLength="60" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
         <EntityType Name="tiposDistribuciones">
           <Key>
             <PropertyRef Name="id" />
@@ -69,6 +95,49 @@
           <Property Name="idUsuarioBaja" Type="int" />
           <Property Name="codigoSeguridad" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="tratamiento" Type="varchar" MaxLength="6" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Juicios_Registro">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="caratula" />
+            <PropertyRef Name="idSubsecretaria" />
+            <PropertyRef Name="idEstadoJuicio" />
+            <PropertyRef Name="heredado" />
+            <PropertyRef Name="esperaRadicacionSCBA" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaAlta" Type="datetime" />
+          <Property Name="fechaRadicacion" Type="datetime" />
+          <Property Name="caratula" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="idMateria" Type="int" />
+          <Property Name="montoOriginal" Type="decimal" Precision="15" Scale="2" />
+          <Property Name="idSubsecretaria" Type="int" Nullable="false" />
+          <Property Name="juzgado" Type="varchar" MaxLength="10" />
+          <Property Name="idJuzgado" Type="int" />
+          <Property Name="secretariaJuzgado" Type="int" />
+          <Property Name="expedienteJudicial" Type="varchar" MaxLength="50" />
+          <Property Name="idDepartamentoJudicial" Type="int" />
+          <Property Name="idPartido" Type="int" />
+          <Property Name="montoSentencia" Type="decimal" Precision="15" Scale="2" />
+          <Property Name="idOrigenDeuda" Type="int" />
+          <Property Name="activo" Type="bit" />
+          <Property Name="evalua" Type="bit" />
+          <Property Name="idEstadoJuicio" Type="int" Nullable="false" />
+          <Property Name="heredado" Type="bit" Nullable="false" />
+          <Property Name="fechaCambioEstado" Type="datetime" />
+          <Property Name="idDependenciaOrigen" Type="int" />
+          <Property Name="idReparticion" Type="int" />
+          <Property Name="fechaBorrado" Type="datetime" />
+          <Property Name="motivoBorrado" Type="varchar" MaxLength="100" />
+          <Property Name="idUsuarioBorrado" Type="int" />
+          <Property Name="idTipoJuicio" Type="int" />
+          <Property Name="idLocalidadEco" Type="int" />
+          <Property Name="esperaRadicacionSCBA" Type="bit" Nullable="false" />
+          <Property Name="idTipoDistribucion" Type="int" />
+          <Property Name="signed" Type="bit" />
+          <Property Name="idNuevoEstado" Type="int" />
         </EntityType>
         <Association Name="FK_colaDistribucion_tiposDistribuciones">
           <End Role="tiposDistribuciones" Type="Self.tiposDistribuciones" Multiplicity="1" />
@@ -110,11 +179,50 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetJuiciosByUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idUsuario" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="fiscaliaModelStoreContainer">
           <EntitySet Name="colaDistribucion" EntityType="Self.colaDistribucion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="colaDistribucionLog" EntityType="Self.colaDistribucionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="personas" EntityType="Self.personas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tiposDistribuciones" EntityType="Self.tiposDistribuciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Juicios_Registro" EntityType="Self.Juicios_Registro" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Juicios_Registro].[id] AS [id], 
+    [Juicios_Registro].[fechaAlta] AS [fechaAlta], 
+    [Juicios_Registro].[fechaRadicacion] AS [fechaRadicacion], 
+    [Juicios_Registro].[caratula] AS [caratula], 
+    [Juicios_Registro].[idMateria] AS [idMateria], 
+    [Juicios_Registro].[montoOriginal] AS [montoOriginal], 
+    [Juicios_Registro].[idSubsecretaria] AS [idSubsecretaria], 
+    [Juicios_Registro].[juzgado] AS [juzgado], 
+    [Juicios_Registro].[idJuzgado] AS [idJuzgado], 
+    [Juicios_Registro].[secretariaJuzgado] AS [secretariaJuzgado], 
+    [Juicios_Registro].[expedienteJudicial] AS [expedienteJudicial], 
+    [Juicios_Registro].[idDepartamentoJudicial] AS [idDepartamentoJudicial], 
+    [Juicios_Registro].[idPartido] AS [idPartido], 
+    [Juicios_Registro].[montoSentencia] AS [montoSentencia], 
+    [Juicios_Registro].[idOrigenDeuda] AS [idOrigenDeuda], 
+    [Juicios_Registro].[activo] AS [activo], 
+    [Juicios_Registro].[evalua] AS [evalua], 
+    [Juicios_Registro].[idEstadoJuicio] AS [idEstadoJuicio], 
+    [Juicios_Registro].[heredado] AS [heredado], 
+    [Juicios_Registro].[fechaCambioEstado] AS [fechaCambioEstado], 
+    [Juicios_Registro].[idDependenciaOrigen] AS [idDependenciaOrigen], 
+    [Juicios_Registro].[idReparticion] AS [idReparticion], 
+    [Juicios_Registro].[fechaBorrado] AS [fechaBorrado], 
+    [Juicios_Registro].[motivoBorrado] AS [motivoBorrado], 
+    [Juicios_Registro].[idUsuarioBorrado] AS [idUsuarioBorrado], 
+    [Juicios_Registro].[idTipoJuicio] AS [idTipoJuicio], 
+    [Juicios_Registro].[idLocalidadEco] AS [idLocalidadEco], 
+    [Juicios_Registro].[esperaRadicacionSCBA] AS [esperaRadicacionSCBA], 
+    [Juicios_Registro].[idTipoDistribucion] AS [idTipoDistribucion], 
+    [Juicios_Registro].[signed] AS [signed], 
+    [Juicios_Registro].[idNuevoEstado] AS [idNuevoEstado]
+    FROM [dbo].[Juicios_Registro] AS [Juicios_Registro]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_colaDistribucion_tiposDistribuciones" Association="Self.FK_colaDistribucion_tiposDistribuciones">
             <End Role="tiposDistribuciones" EntitySet="tiposDistribuciones" />
             <End Role="colaDistribucion" EntitySet="colaDistribucion" />
@@ -224,7 +332,12 @@
             <End Role="usuario" EntitySet="usuarios" />
             <End Role="colaDistribucion" EntitySet="colaDistribucions" />
           </AssociationSet>
-        </EntityContainer>
+          <FunctionImport Name="GetJuiciosByUsuario" ReturnType="Collection(fiscaliaModel.GetJuiciosByUsuario_Result)">
+          <Parameter Name="idUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Juicios_Registro" EntityType="fiscaliaModel.Juicios_Registro" />
+          <EntitySet Name="personas" EntityType="fiscaliaModel.persona" />
+          </EntityContainer>
         <EntityType Name="usuario">
           <Key>
             <PropertyRef Name="id" />
@@ -261,7 +374,98 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <ComplexType Name="GetJuiciosByUsuario_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="DateTime" Name="fechaAlta" Nullable="true" Precision="23" />
+          <Property Type="String" Name="caratula" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="idMateria" Nullable="true" />
+          <Property Type="String" Name="materia" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="idSubsecretaria" Nullable="false" />
+          <Property Type="String" Name="subsecretaria" Nullable="false" MaxLength="6" />
+          <Property Type="Decimal" Name="montoOriginal" Nullable="true" Precision="15" Scale="2" />
+          <Property Type="String" Name="juzgado" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="idDepartamentoJudicial" Nullable="true" />
+          <Property Type="String" Name="departamentoJudicial" Nullable="true" MaxLength="70" />
+          <Property Type="Int32" Name="secretariaJuzgado" Nullable="true" />
+          <Property Type="Decimal" Name="montoSentencia" Nullable="true" Precision="15" Scale="2" />
+          <Property Type="String" Name="expedienteJudicial" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="reparticion" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="fechaRadicacion" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="idEstadoJuicio" Nullable="false" />
+          <Property Type="String" Name="estadoJuicio" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="evalua" Nullable="true" />
+          <Property Type="Boolean" Name="heredado" Nullable="false" />
+          <Property Type="Int32" Name="idtipoJuicio" Nullable="true" />
+          <Property Type="String" Name="tipoJuicio" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <EntityType Name="Juicios_Registro">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="caratula" />
+            <PropertyRef Name="idSubsecretaria" />
+            <PropertyRef Name="idEstadoJuicio" />
+            <PropertyRef Name="heredado" />
+            <PropertyRef Name="esperaRadicacionSCBA" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fechaAlta" Type="DateTime" Precision="3" />
+          <Property Name="fechaRadicacion" Type="DateTime" Precision="3" />
+          <Property Name="caratula" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idMateria" Type="Int32" />
+          <Property Name="montoOriginal" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="idSubsecretaria" Type="Int32" Nullable="false" />
+          <Property Name="juzgado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="idJuzgado" Type="Int32" />
+          <Property Name="secretariaJuzgado" Type="Int32" />
+          <Property Name="expedienteJudicial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idDepartamentoJudicial" Type="Int32" />
+          <Property Name="idPartido" Type="Int32" />
+          <Property Name="montoSentencia" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="idOrigenDeuda" Type="Int32" />
+          <Property Name="activo" Type="Boolean" />
+          <Property Name="evalua" Type="Boolean" />
+          <Property Name="idEstadoJuicio" Type="Int32" Nullable="false" />
+          <Property Name="heredado" Type="Boolean" Nullable="false" />
+          <Property Name="fechaCambioEstado" Type="DateTime" Precision="3" />
+          <Property Name="idDependenciaOrigen" Type="Int32" />
+          <Property Name="idReparticion" Type="Int32" />
+          <Property Name="fechaBorrado" Type="DateTime" Precision="3" />
+          <Property Name="motivoBorrado" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuarioBorrado" Type="Int32" />
+          <Property Name="idTipoJuicio" Type="Int32" />
+          <Property Name="idLocalidadEco" Type="Int32" />
+          <Property Name="esperaRadicacionSCBA" Type="Boolean" Nullable="false" />
+          <Property Name="idTipoDistribucion" Type="Int32" />
+          <Property Name="signed" Type="Boolean" />
+          <Property Name="idNuevoEstado" Type="Int32" />
+        </EntityType>
+        <EntityType Name="persona">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipoPersona" Type="Int32" />
+          <Property Name="apellido" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="idTipoDocumento" Type="Int32" />
+          <Property Name="cuit" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="numeroDocumento" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="idEstadoCivil" Type="Int32" />
+          <Property Name="nacionalidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idTipoSociedad" Type="Int32" />
+          <Property Name="tipoPersoneria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="registro" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="numeroSociedad" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="fechaInscripcion" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="tomo" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="letra" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="folio" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="sexo" Type="Boolean" />
+          <Property Name="fechaAlta" Type="DateTime" Precision="3" />
+          <Property Name="idUsuarioAlta" Type="Int32" />
+          <Property Name="razonSocial" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -332,6 +536,98 @@
                 <ScalarProperty Name="nombres" ColumnName="nombres" />
                 <ScalarProperty Name="apellido" ColumnName="apellido" />
                 <ScalarProperty Name="sid" ColumnName="sid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetJuiciosByUsuario" FunctionName="fiscaliaModel.Store.GetJuiciosByUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="fiscaliaModel.GetJuiciosByUsuario_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+                <ScalarProperty Name="caratula" ColumnName="caratula" />
+                <ScalarProperty Name="idMateria" ColumnName="idMateria" />
+                <ScalarProperty Name="materia" ColumnName="materia" />
+                <ScalarProperty Name="idSubsecretaria" ColumnName="idSubsecretaria" />
+                <ScalarProperty Name="subsecretaria" ColumnName="subsecretaria" />
+                <ScalarProperty Name="montoOriginal" ColumnName="montoOriginal" />
+                <ScalarProperty Name="juzgado" ColumnName="juzgado" />
+                <ScalarProperty Name="idDepartamentoJudicial" ColumnName="idDepartamentoJudicial" />
+                <ScalarProperty Name="departamentoJudicial" ColumnName="departamentoJudicial" />
+                <ScalarProperty Name="secretariaJuzgado" ColumnName="secretariaJuzgado" />
+                <ScalarProperty Name="montoSentencia" ColumnName="montoSentencia" />
+                <ScalarProperty Name="expedienteJudicial" ColumnName="expedienteJudicial" />
+                <ScalarProperty Name="reparticion" ColumnName="reparticion" />
+                <ScalarProperty Name="fechaRadicacion" ColumnName="fechaRadicacion" />
+                <ScalarProperty Name="idEstadoJuicio" ColumnName="idEstadoJuicio" />
+                <ScalarProperty Name="estadoJuicio" ColumnName="estadoJuicio" />
+                <ScalarProperty Name="evalua" ColumnName="evalua" />
+                <ScalarProperty Name="heredado" ColumnName="heredado" />
+                <ScalarProperty Name="idtipoJuicio" ColumnName="idtipoJuicio" />
+                <ScalarProperty Name="tipoJuicio" ColumnName="tipoJuicio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Juicios_Registro">
+            <EntityTypeMapping TypeName="fiscaliaModel.Juicios_Registro">
+              <MappingFragment StoreEntitySet="Juicios_Registro">
+                <ScalarProperty Name="idNuevoEstado" ColumnName="idNuevoEstado" />
+                <ScalarProperty Name="signed" ColumnName="signed" />
+                <ScalarProperty Name="idTipoDistribucion" ColumnName="idTipoDistribucion" />
+                <ScalarProperty Name="esperaRadicacionSCBA" ColumnName="esperaRadicacionSCBA" />
+                <ScalarProperty Name="idLocalidadEco" ColumnName="idLocalidadEco" />
+                <ScalarProperty Name="idTipoJuicio" ColumnName="idTipoJuicio" />
+                <ScalarProperty Name="idUsuarioBorrado" ColumnName="idUsuarioBorrado" />
+                <ScalarProperty Name="motivoBorrado" ColumnName="motivoBorrado" />
+                <ScalarProperty Name="fechaBorrado" ColumnName="fechaBorrado" />
+                <ScalarProperty Name="idReparticion" ColumnName="idReparticion" />
+                <ScalarProperty Name="idDependenciaOrigen" ColumnName="idDependenciaOrigen" />
+                <ScalarProperty Name="fechaCambioEstado" ColumnName="fechaCambioEstado" />
+                <ScalarProperty Name="heredado" ColumnName="heredado" />
+                <ScalarProperty Name="idEstadoJuicio" ColumnName="idEstadoJuicio" />
+                <ScalarProperty Name="evalua" ColumnName="evalua" />
+                <ScalarProperty Name="activo" ColumnName="activo" />
+                <ScalarProperty Name="idOrigenDeuda" ColumnName="idOrigenDeuda" />
+                <ScalarProperty Name="montoSentencia" ColumnName="montoSentencia" />
+                <ScalarProperty Name="idPartido" ColumnName="idPartido" />
+                <ScalarProperty Name="idDepartamentoJudicial" ColumnName="idDepartamentoJudicial" />
+                <ScalarProperty Name="expedienteJudicial" ColumnName="expedienteJudicial" />
+                <ScalarProperty Name="secretariaJuzgado" ColumnName="secretariaJuzgado" />
+                <ScalarProperty Name="idJuzgado" ColumnName="idJuzgado" />
+                <ScalarProperty Name="juzgado" ColumnName="juzgado" />
+                <ScalarProperty Name="idSubsecretaria" ColumnName="idSubsecretaria" />
+                <ScalarProperty Name="montoOriginal" ColumnName="montoOriginal" />
+                <ScalarProperty Name="idMateria" ColumnName="idMateria" />
+                <ScalarProperty Name="caratula" ColumnName="caratula" />
+                <ScalarProperty Name="fechaRadicacion" ColumnName="fechaRadicacion" />
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personas">
+            <EntityTypeMapping TypeName="fiscaliaModel.persona">
+              <MappingFragment StoreEntitySet="personas">
+                <ScalarProperty Name="razonSocial" ColumnName="razonSocial" />
+                <ScalarProperty Name="idUsuarioAlta" ColumnName="idUsuarioAlta" />
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="folio" ColumnName="folio" />
+                <ScalarProperty Name="letra" ColumnName="letra" />
+                <ScalarProperty Name="tomo" ColumnName="tomo" />
+                <ScalarProperty Name="fechaInscripcion" ColumnName="fechaInscripcion" />
+                <ScalarProperty Name="numeroSociedad" ColumnName="numeroSociedad" />
+                <ScalarProperty Name="registro" ColumnName="registro" />
+                <ScalarProperty Name="tipoPersoneria" ColumnName="tipoPersoneria" />
+                <ScalarProperty Name="idTipoSociedad" ColumnName="idTipoSociedad" />
+                <ScalarProperty Name="nacionalidad" ColumnName="nacionalidad" />
+                <ScalarProperty Name="idEstadoCivil" ColumnName="idEstadoCivil" />
+                <ScalarProperty Name="numeroDocumento" ColumnName="numeroDocumento" />
+                <ScalarProperty Name="cuit" ColumnName="cuit" />
+                <ScalarProperty Name="idTipoDocumento" ColumnName="idTipoDocumento" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="idTipoPersona" ColumnName="idTipoPersona" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

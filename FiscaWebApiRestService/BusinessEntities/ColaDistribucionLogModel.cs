@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessEntities
 {
-    class ColaDistribucionLogModel
+    public class ColaDistribucionLogModel
     {
         public int id { get; set; }
         public Nullable<int> idColaDistribucion { get; set; }

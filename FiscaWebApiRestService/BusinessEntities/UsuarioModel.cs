@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessEntities
 {
-    class UsuarioModel
+    public class UsuarioModel
     {
         public int id { get; set; }
         public byte[] sid { get; set; }

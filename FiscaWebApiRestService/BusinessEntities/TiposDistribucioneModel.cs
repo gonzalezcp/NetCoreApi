@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessEntities
 {
-    class TiposDistribucioneModel
+    public class TiposDistribucioneModel
     {
 
         public int id { get; set; }

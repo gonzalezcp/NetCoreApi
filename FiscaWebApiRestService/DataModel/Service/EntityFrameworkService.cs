@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
+using BusinessEntities;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace DataModel.Service
     {
 
         protected readonly TContext context;
+        //protected DbSet<TContext> DbSet;
         public EntityFrameworkService(TContext context)
         {
             this.context = context;
@@ -21,17 +24,63 @@ namespace DataModel.Service
             throw new NotImplementedException();
         }
 
-        //public BusinessEntities.ProductEntity GetColaById(int productId)
+        public IEnumerable<BusinessEntities.PersonaModel> GetPersonaApellido(String apellido)
+        {
+            var EFPersonas = context.Set<persona>();
+            var personasConApellidoX = (from a in EFPersonas
+                                        where a.apellido == apellido
+                                            select a).ToList();
+
+            if (personasConApellidoX.Any())
+            {
+                Mapper.Initialize(cfg => {
+                    cfg.CreateMap<IEnumerable<persona>, IEnumerable<BusinessEntities.PersonaModel>>();
+                });
+
+                var personasConApellidoXModel = Mapper.Map<IEnumerable<persona>, IEnumerable<BusinessEntities.PersonaModel>>(personasConApellidoX);
+                return personasConApellidoXModel;
+            }
+            return null;
+        }
+
+        //public int CreatePersonas(BusinessEntities.ProductEntity productEntity)
         //{
-        //    var product = _unitOfWork.ProductRepository.GetByID(productId);
-        //    if (product != null)
+        //    using (var scope = new TransactionScope())
         //    {
-        //        Mapper.CreateMap<Product, ProductEntity>();
-        //        var productModel = Mapper.Map<Product, ProductEntity>(product);
-        //        return productModel;
+        //        var product = new Product
+        //        {
+        //            ProductName = productEntity.ProductName
+        //        };
+        //        _unitOfWork.ProductRepository.Insert(product);
+        //        _unitOfWork.Save();
+        //        scope.Complete();
+        //        return product.ProductId;
         //    }
-        //    return null;
         //}
+
+
+
+
+
+        public IEnumerable<BusinessEntities.ColaDistribucionModel>  GetColaByIdTipoDistribucion(int idTipoDistribucion)
+        {
+            var EFColaDistribucion = context.Set<colaDistribucion>();
+            var colaDeUnTipoDistribucion = (from a in EFColaDistribucion
+                                            where a.idTipoDistribucion == idTipoDistribucion &&
+                                                a.fechaBorrado!= null
+                                            select a).ToList();
+
+            if (colaDeUnTipoDistribucion.Any())
+            {
+                Mapper.Initialize(cfg => {
+                    cfg.CreateMap<IEnumerable<colaDistribucion>, IEnumerable<BusinessEntities.ColaDistribucionModel>>();
+                });
+
+                var colasDistribucionModel = Mapper.Map<IEnumerable<colaDistribucion>, IEnumerable<BusinessEntities.ColaDistribucionModel>>(colaDeUnTipoDistribucion);
+                return colasDistribucionModel;
+            }
+            return null;
+        }
 
         protected virtual IQueryable<TEntity> GetQueryable<TEntity>(Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessEntities
 {
-    class ColaDistribucionModel
+    public class ColaDistribucionModel
     {
 
         public int id { get; set; }

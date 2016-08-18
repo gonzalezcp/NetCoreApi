@@ -12,6 +12,8 @@ namespace DataModel
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class fiscaliaEntities : DbContext
     {
@@ -29,5 +31,16 @@ namespace DataModel
         public virtual DbSet<colaDistribucionLog> colaDistribucionLogs { get; set; }
         public virtual DbSet<tiposDistribucione> tiposDistribuciones { get; set; }
         public virtual DbSet<usuario> usuarios { get; set; }
+        public virtual DbSet<Juicios_Registro> Juicios_Registro { get; set; }
+        public virtual DbSet<persona> personas { get; set; }
+    
+        public virtual ObjectResult<GetJuiciosByUsuario_Result> GetJuiciosByUsuario(Nullable<int> idUsuario)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("idUsuario", idUsuario) :
+                new ObjectParameter("idUsuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetJuiciosByUsuario_Result>("GetJuiciosByUsuario", idUsuarioParameter);
+        }
     }
 }
