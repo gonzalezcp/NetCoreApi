@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataModel.Service
 {
-    class EntityFrameworkService<TContext> : IService where TContext : DbContext
+    public class EntityFrameworkService<TContext> : IService where TContext : DbContext
     {
 
         protected readonly TContext context;
@@ -18,6 +18,15 @@ namespace DataModel.Service
         public EntityFrameworkService(TContext context)
         {
             this.context = context;
+            //autoMapperCfg();
+        }
+
+        private void autoMapperCfg()
+        {
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<IEnumerable<persona>, IEnumerable<BusinessEntities.PersonaModel>>();
+                cfg.CreateMap<IEnumerable<BusinessEntities.PersonaModel>, IEnumerable<persona>>();
+            });
         }
         public IEnumerable<colaDistribucion> GetCola()
         {
@@ -27,98 +36,126 @@ namespace DataModel.Service
         public IEnumerable<BusinessEntities.PersonaModel> GetPersonaApellido(String apellido)
         {
             var EFPersonas = context.Set<persona>();
-            var personasConApellidoX = (from a in EFPersonas
-                                        where a.apellido == apellido
-                                            select a).ToList();
-
-            if (personasConApellidoX.Any())
+            var personasConApellidoEF = (from p in EFPersonas
+                                        where p.apellido == apellido
+                                            select p).ToList();
+            
+            if (personasConApellidoEF.Any())
             {
-                Mapper.Initialize(cfg => {
-                    cfg.CreateMap<IEnumerable<persona>, IEnumerable<BusinessEntities.PersonaModel>>();
-                });
 
-                var personasConApellidoXModel = Mapper.Map<IEnumerable<persona>, IEnumerable<BusinessEntities.PersonaModel>>(personasConApellidoX);
-                return personasConApellidoXModel;
+                Mapper.Initialize(cfg => {
+                    cfg.CreateMap<persona, BusinessEntities.PersonaModel>();
+                });
+                var personasConApellidoModel = Mapper.Map<List<persona>, List<BusinessEntities.PersonaModel>>(personasConApellidoEF);
+
+                return personasConApellidoModel;
             }
             return null;
         }
 
-        //public int CreatePersonas(BusinessEntities.ProductEntity productEntity)
+
+        public bool UpdateProduct(int idPersona, BusinessEntities.PersonaModel personaModel)
+        {
+            var success = false;
+            var EFPersonas = context.Set<persona>();
+            if (personaModel != null)
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    var EFPersona = EFPersonas.Find(idPersona);
+                    if (EFPersona != null)
+                    {
+                        EFPersona.apellido = personaModel.apellido;
+                        EFPersona.nombre = personaModel.nombre;
+                        EFPersona.cuit = personaModel.cuit;
+                        EFPersona.idEstadoCivil = personaModel.idEstadoCivil;
+                        EFPersona.numeroDocumento = personaModel.numeroDocumento;
+                        EFPersona.idTipoPersona = personaModel.idTipoPersona;
+                        EFPersona.sexo = personaModel.sexo;
+                        context.Database.CurrentTransaction.Commit();
+                        success = true;
+                    }
+                }
+            }
+            return success;
+        }
+        //public bool DeleteProduct(int productId)
         //{
-        //    using (var scope = new TransactionScope())
+        //    var success = false;
+        //    if (productId > 0)
         //    {
-        //        var product = new Product
+        //        using (var scope = new TransactionScope())
         //        {
-        //            ProductName = productEntity.ProductName
-        //        };
-        //        _unitOfWork.ProductRepository.Insert(product);
-        //        _unitOfWork.Save();
-        //        scope.Complete();
-        //        return product.ProductId;
+        //            var product = _unitOfWork.ProductRepository.GetByID(productId);
+        //            if (product != null)
+        //            {
+
+        //                _unitOfWork.ProductRepository.Delete(product);
+        //                _unitOfWork.Save();
+        //                scope.Complete();
+        //                success = true;
+        //            }
+        //        }
         //    }
+        //    return success;
         //}
+    //public int CreatePersonas(BusinessEntities.ProductEntity productEntity)
+    //{
+    //    using (var scope = new TransactionScope())
+    //    {
+    //        var product = new Product
+    //        {
+    //            ProductName = productEntity.ProductName
+    //        };
+    //        _unitOfWork.ProductRepository.Insert(product);
+    //        _unitOfWork.Save();
+    //        scope.Complete();
+    //        return product.ProductId;
+    //    }
+    //}
 
 
 
 
 
-        public IEnumerable<BusinessEntities.ColaDistribucionModel>  GetColaByIdTipoDistribucion(int idTipoDistribucion)
-        {
-            var EFColaDistribucion = context.Set<colaDistribucion>();
-            var colaDeUnTipoDistribucion = (from a in EFColaDistribucion
-                                            where a.idTipoDistribucion == idTipoDistribucion &&
-                                                a.fechaBorrado!= null
-                                            select a).ToList();
 
-            if (colaDeUnTipoDistribucion.Any())
-            {
-                Mapper.Initialize(cfg => {
-                    cfg.CreateMap<IEnumerable<colaDistribucion>, IEnumerable<BusinessEntities.ColaDistribucionModel>>();
-                });
+        //protected virtual IQueryable<TEntity> getQueryable<TEntity>(Expression<Func<TEntity, bool>> filter = null,
+        //    Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+        //    string includeProperties = null,
+        //    int? skip = null,
+        //    int? take = null) where TEntity : class
+        //{
+        //    includeProperties = includeProperties ?? string.Empty;
+        //    IQueryable<TEntity> query = context.Set<TEntity>();
 
-                var colasDistribucionModel = Mapper.Map<IEnumerable<colaDistribucion>, IEnumerable<BusinessEntities.ColaDistribucionModel>>(colaDeUnTipoDistribucion);
-                return colasDistribucionModel;
-            }
-            return null;
-        }
+        //    if (filter != null)
+        //    {
+        //        query = query.Where(filter);
+        //    }
 
-        protected virtual IQueryable<TEntity> GetQueryable<TEntity>(Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = null,
-            int? skip = null,
-            int? take = null) where TEntity : class
-        {
-            includeProperties = includeProperties ?? string.Empty;
-            IQueryable<TEntity> query = context.Set<TEntity>();
+        //    foreach (var includeProperty in includeProperties.Split
+        //        (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        //    {
+        //        query = query.Include(includeProperty);
+        //    }
 
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
+        //    if (orderBy != null)
+        //    {
+        //        query = orderBy(query);
+        //    }
 
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+        //    if (skip.HasValue)
+        //    {
+        //        query = query.Skip(skip.Value);
+        //    }
 
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
+        //    if (take.HasValue)
+        //    {
+        //        query = query.Take(take.Value);
+        //    }
 
-            if (skip.HasValue)
-            {
-                query = query.Skip(skip.Value);
-            }
-
-            if (take.HasValue)
-            {
-                query = query.Take(take.Value);
-            }
-
-            return query;
-        }
+        //    return query;
+        //}
 
 
 
