@@ -40,7 +40,6 @@ namespace Testing.Service
             mockSet.As<IQueryable<persona>>().Setup(m => m.Expression).Returns(data.Expression);
             mockSet.As<IQueryable<persona>>().Setup(m => m.ElementType).Returns(data.ElementType);
             mockSet.As<IQueryable<persona>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
-
             var mockContext = new Mock<fiscaliaEntities>();
             mockContext.Setup(c => c.personas).Returns(mockSet.Object);
             // este es porque el Servicio usa Genericos
