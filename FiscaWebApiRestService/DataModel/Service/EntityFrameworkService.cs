@@ -3,6 +3,7 @@ using BusinessEntities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -18,15 +19,16 @@ namespace DataModel.Service
         public EntityFrameworkService(TContext context)
         {
             this.context = context;
-            //autoMapperCfg();
+            autoMapperCfg();
         }
 
         private void autoMapperCfg()
         {
             Mapper.Initialize(cfg => {
-                cfg.CreateMap<IEnumerable<persona>, IEnumerable<BusinessEntities.PersonaModel>>();
-                cfg.CreateMap<IEnumerable<BusinessEntities.PersonaModel>, IEnumerable<persona>>();
+                cfg.CreateMap<persona, BusinessEntities.PersonaModel>();
+                cfg.CreateMap<BusinessEntities.PersonaModel, persona>();
             });
+
         }
         public IEnumerable<colaDistribucion> GetCola()
         {
@@ -43,11 +45,10 @@ namespace DataModel.Service
             if (personasConApellidoEF.Any())
             {
 
-                Mapper.Initialize(cfg => {
-                    cfg.CreateMap<persona, BusinessEntities.PersonaModel>();
-                });
+                //Mapper.Initialize(cfg => {
+                //    cfg.CreateMap<persona, BusinessEntities.PersonaModel>();
+                //});
                 var personasConApellidoModel = Mapper.Map<List<persona>, List<BusinessEntities.PersonaModel>>(personasConApellidoEF);
-
                 return personasConApellidoModel;
             }
             return null;
@@ -65,58 +66,74 @@ namespace DataModel.Service
                     var EFPersona = EFPersonas.Find(idPersona);
                     if (EFPersona != null)
                     {
-                        EFPersona.apellido = personaModel.apellido;
-                        EFPersona.nombre = personaModel.nombre;
-                        EFPersona.cuit = personaModel.cuit;
-                        EFPersona.idEstadoCivil = personaModel.idEstadoCivil;
-                        EFPersona.numeroDocumento = personaModel.numeroDocumento;
-                        EFPersona.idTipoPersona = personaModel.idTipoPersona;
-                        EFPersona.sexo = personaModel.sexo;
-                        context.Database.CurrentTransaction.Commit();
+
+                        Mapper.Map<BusinessEntities.PersonaModel, persona>(personaModel, EFPersona);
+
+                        // withoutt autommapper
+                        //
+                        //EFPersona.apellido = personaModel.apellido;
+                        //EFPersona.nombre = personaModel.nombre;
+                        //EFPersona.cuit = personaModel.cuit;
+                        //EFPersona.idEstadoCivil = personaModel.idEstadoCivil;
+                        //EFPersona.numeroDocumento = personaModel.numeroDocumento;
+                        //EFPersona.idTipoPersona = personaModel.idTipoPersona;
+                        //EFPersona.sexo = personaModel.sexo;
+                        context.SaveChanges();
+                        transaction.Commit();
                         success = true;
                     }
                 }
             }
             return success;
         }
-        //public bool DeleteProduct(int productId)
-        //{
-        //    var success = false;
-        //    if (productId > 0)
-        //    {
-        //        using (var scope = new TransactionScope())
-        //        {
-        //            var product = _unitOfWork.ProductRepository.GetByID(productId);
-        //            if (product != null)
-        //            {
-
-        //                _unitOfWork.ProductRepository.Delete(product);
-        //                _unitOfWork.Save();
-        //                scope.Complete();
-        //                success = true;
-        //            }
-        //        }
-        //    }
-        //    return success;
-        //}
-    //public int CreatePersonas(BusinessEntities.ProductEntity productEntity)
-    //{
-    //    using (var scope = new TransactionScope())
-    //    {
-    //        var product = new Product
-    //        {
-    //            ProductName = productEntity.ProductName
-    //        };
-    //        _unitOfWork.ProductRepository.Insert(product);
-    //        _unitOfWork.Save();
-    //        scope.Complete();
-    //        return product.ProductId;
-    //    }
-    //}
+        public bool DeletePersonaById(int idPersona)
+        {
+            var success = false;
+            if (idPersona > 0)
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    var EFPersonas = context.Set<persona>();
+                    var EFPersonaToDelte = EFPersonas.SingleOrDefault(p => p.id == idPersona);
+                    if (EFPersonaToDelte != null)
+                    {
+                        if (context.Entry(EFPersonaToDelte).State == EntityState.Detached)
+                        {
+                            EFPersonas.Attach(EFPersonaToDelte);
+                        }
+                        EFPersonas.Remove(EFPersonaToDelte);
+                        context.SaveChanges();
+                        transaction.Commit();
+                        success = true;
+                    }
+                }
+            }
+            return success;
+        }
 
 
-
-
+        public int CreatePersonas(BusinessEntities.PersonaModel personaModel)
+        {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                var persona = Mapper.Map<BusinessEntities.PersonaModel, persona>(personaModel);
+                var EFPersonas = context.Set<persona>();
+                try
+                {
+                    EFPersonas.Add(persona);
+                    context.SaveChanges();
+                    transaction.Commit();
+                    return persona.id;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.InnerException.Message);
+                    
+                    transaction.Rollback();
+                }
+                return 0;
+            }
+        }
 
 
         //protected virtual IQueryable<TEntity> getQueryable<TEntity>(Expression<Func<TEntity, bool>> filter = null,
