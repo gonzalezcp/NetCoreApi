@@ -20,6 +20,7 @@ namespace DataModel.Service
         {
             this.context = context;
             autoMapperCfg();
+
         }
 
         private void autoMapperCfg()
