@@ -103,35 +103,35 @@ namespace Testing.Service
             Assert.AreEqual(1, table.Count());
         }
 
-        //[TestMethod]
-        //public void DeletePersona2()
-        //{
-        //    var mockedDbContext = EntityFrameworkMockHelper.GetMockContext<DataModel.fiscaliaEntities>();
-        //    mockedDbContext.Object.personas.Add(
-        //    new persona
-        //    {
-        //        id = 1,
-        //        nombre = "Loco",
-        //        apellido = "Del Coco",
-        //        sexo = true,
-        //        numeroDocumento = 66666
-        //    });
-        //    mockedDbContext.Object.personas.Add(
-        //    new persona
-        //    {
-        //        id = 2,
-        //        nombre = "Chiflado",
-        //        apellido = "Del Coco",
-        //        sexo = true,
-        //        numeroDocumento = 66666
-        //    });
-        //    //Test
-        //    var service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockedDbContext.Object);
-            
-        //    //delete
-        //    bool wasDeleted = service.DeletePersonaById(1);
-        //    Assert.AreEqual(1, mockedDbContext.Object.personas.Count());
-        //}
+        [TestMethod]
+        public void DeletePersona2()
+        {
+            var mockedDbContext = EntityFrameworkMockHelper.GetMockContext<DataModel.fiscaliaEntities>();
+            mockedDbContext.Object.personas.Add(
+            new persona
+            {
+                id = 1,
+                nombre = "Loco",
+                apellido = "Del Coco",
+                sexo = true,
+                numeroDocumento = 66666
+            });
+            mockedDbContext.Object.personas.Add(
+            new persona
+            {
+                id = 2,
+                nombre = "Chiflado",
+                apellido = "Del Coco",
+                sexo = true,
+                numeroDocumento = 66666
+            });
+            //Test
+            var service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockedDbContext.Object);
+
+            //delete
+            bool wasDeleted = service.DeletePersonaById(1);
+            Assert.AreEqual(1, mockedDbContext.Object.personas.Count());
+        }
 
     }
 }

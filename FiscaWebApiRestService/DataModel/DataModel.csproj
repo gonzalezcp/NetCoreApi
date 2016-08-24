@@ -96,6 +96,7 @@
     <Compile Include="persona.cs">
       <DependentUpon>Fiscalia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Service\EFMockHelper.cs" />
     <Compile Include="Service\EntityFrameworkMockHelper.cs" />
     <Compile Include="Service\EntityFrameworkService.cs" />
     <Compile Include="Service\IService.cs" />
