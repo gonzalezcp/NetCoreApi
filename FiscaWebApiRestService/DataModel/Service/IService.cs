@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataModel.Service
 {
-    interface IService
+    public interface IService
     {
         IEnumerable<colaDistribucion> GetCola();
-
+        IEnumerable<BusinessEntities.PersonaModel> GetPersonaApellido(String apellido);
     }
 
 }
