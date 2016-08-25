@@ -2,6 +2,7 @@
 using DataModel;
 using DataModel.Service;
 using Moq;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,11 @@ namespace TestAMano
             //var ape = servicio.GetPersonaApellido("Del Coco");
             //bool wasDeleted = servicio.DeletePersonaById(638282);
 
-
+            Ninject.IKernel kernal = new StandardKernel();
+            kernal.Bind<IService>().To<EntityFrameworkService<fiscaliaEntities>>();
+            var instance = kernal.Get<EntityFrameworkService<fiscaliaEntities>>();
+            instance.GetPersonaApellido("Del Coco");
+            Console.ReadLine();
 
 
             var mockedDbContext = EntityFrameworkMockHelper.GetMockContext<DataModel.fiscaliaEntities>();
