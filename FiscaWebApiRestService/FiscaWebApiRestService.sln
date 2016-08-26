@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscaWebApiRestService", "FiscaWebApiRestService\FiscaWebApiRestService.csproj", "{4451E54C-9A02-471E-BEAC-A94024C18820}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{100ABA35-793F-487D-858C-43000B342F47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessEntities", "BusinessEntities\BusinessEntities.csproj", "{DF38D3C7-30C4-46C3-B2F4-51CE21ECC3FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAMano", "TestAMano\TestAMano.csproj", "{3DEE1C22-DE3E-43D8-8B59-7F1BF587353C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{39229C01-E664-4375-9F09-476967BFD4B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.DataModel", "Testing\Test.DataModel.csproj", "{39229C01-E664-4375-9F09-476967BFD4B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscaWebApiRestService", "FiscaWebApiRestService\FiscaWebApiRestService.csproj", "{C821AF55-51BB-4C99-B8F1-952B290494A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscaWebApiRestService.Tests", "FiscaWebApiRestService.Tests\FiscaWebApiRestService.Tests.csproj", "{E2426691-E299-46BA-A21F-1D7B90528B97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4451E54C-9A02-471E-BEAC-A94024C18820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4451E54C-9A02-471E-BEAC-A94024C18820}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4451E54C-9A02-471E-BEAC-A94024C18820}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4451E54C-9A02-471E-BEAC-A94024C18820}.Release|Any CPU.Build.0 = Release|Any CPU
 		{100ABA35-793F-487D-858C-43000B342F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{100ABA35-793F-487D-858C-43000B342F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{100ABA35-793F-487D-858C-43000B342F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +37,14 @@ Global
 		{39229C01-E664-4375-9F09-476967BFD4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39229C01-E664-4375-9F09-476967BFD4B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39229C01-E664-4375-9F09-476967BFD4B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C821AF55-51BB-4C99-B8F1-952B290494A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C821AF55-51BB-4C99-B8F1-952B290494A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C821AF55-51BB-4C99-B8F1-952B290494A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C821AF55-51BB-4C99-B8F1-952B290494A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2426691-E299-46BA-A21F-1D7B90528B97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2426691-E299-46BA-A21F-1D7B90528B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2426691-E299-46BA-A21F-1D7B90528B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2426691-E299-46BA-A21F-1D7B90528B97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

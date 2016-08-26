@@ -10,6 +10,9 @@ namespace DataModel.Service
     {
         IEnumerable<colaDistribucion> GetCola();
         IEnumerable<BusinessEntities.PersonaModel> GetPersonaApellido(String apellido);
+        bool UpdatePersona(int idPersona, BusinessEntities.PersonaModel personaModel);
+        bool DeletePersonaById(int idPersona);
+        int CreatePersonas(BusinessEntities.PersonaModel personaModel);
     }
 
 }

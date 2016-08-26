@@ -104,7 +104,7 @@ namespace Testing.Service
         }
 
         [TestMethod]
-        public void DeletePersona2()
+        public void DeletePersona()
         {
             List<persona> table = new List<persona>();
             var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
@@ -138,6 +138,45 @@ namespace Testing.Service
             bool wasDeleted = service.DeletePersonaById(1);
             Assert.AreEqual(1, table.Count());
         }
+
+
+        [TestMethod]
+        public void UpdatePersona()
+        {
+            List<persona> table = new List<persona>();
+            var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
+            var mockContext = new Mock<fiscaliaEntities>();
+            mockContext.Setup(c => c.personas).Returns(mockSet.Object);
+            // este es porque el Servicio usa Genericos
+            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
+
+            table.Add(
+            new persona
+            {
+                id = 1,
+                nombre = "Loco",
+                apellido = "Del Coco",
+                sexo = true,
+                numeroDocumento = 66666
+            });
+            table.Add(
+            new persona
+            {
+                id = 2,
+                nombre = "Chiflado",
+                apellido = "Del Coco",
+                sexo = true,
+                numeroDocumento = 66666
+            });
+            //Test
+            var service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
+
+            //delete
+            bool wasDeleted = service.DeletePersonaById(1);
+            Assert.AreEqual(1, table.Count());
+        }
+
+
 
     }
 }

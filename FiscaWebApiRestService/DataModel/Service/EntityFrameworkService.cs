@@ -15,7 +15,6 @@ namespace DataModel.Service
     {
 
         protected readonly TContext context;
-        //protected DbSet<TContext> DbSet;
         public EntityFrameworkService(TContext context)
         {
             this.context = context;
@@ -55,7 +54,7 @@ namespace DataModel.Service
         }
 
 
-        public bool UpdateProduct(int idPersona, BusinessEntities.PersonaModel personaModel)
+        public bool UpdatePersona(int idPersona, BusinessEntities.PersonaModel personaModel)
         {
             var success = false;
             var EFPersonas = context.Set<persona>();
@@ -110,8 +109,6 @@ namespace DataModel.Service
             }
             return success;
         }
-
-
         public int CreatePersonas(BusinessEntities.PersonaModel personaModel)
         {
             using (var transaction = context.Database.BeginTransaction())
@@ -172,97 +169,6 @@ namespace DataModel.Service
         //    }
 
         //    return query;
-        //}
-
-
-
-        ///// <summary>
-        ///// Fetches all the products.
-        ///// </summary>
-        ///// <returns></returns>
-        //public IEnumerable<BusinessEntities.ProductEntity> GetAllProducts()
-        //{
-        //    var products = _unitOfWork.ProductRepository.GetAll().ToList();
-        //    if (products.Any())
-        //    {
-        //        Mapper.CreateMap<Product, ProductEntity>();
-        //        var productsModel = Mapper.Map<List<Product>, List<ProductEntity>>(products);
-        //        return productsModel;
-        //    }
-        //    return null;
-        //}
-
-        ///// <summary>
-        ///// Creates a product
-        ///// </summary>
-        ///// <param name="productEntity"></param>
-        ///// <returns></returns>
-        //public int CreateProduct(BusinessEntities.ProductEntity productEntity)
-        //{
-        //    using (var scope = new TransactionScope())
-        //    {
-        //        var product = new Product
-        //        {
-        //            ProductName = productEntity.ProductName
-        //        };
-        //        _unitOfWork.ProductRepository.Insert(product);
-        //        _unitOfWork.Save();
-        //        scope.Complete();
-        //        return product.ProductId;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Updates a product
-        ///// </summary>
-        ///// <param name="productId"></param>
-        ///// <param name="productEntity"></param>
-        ///// <returns></returns>
-        //public bool UpdateProduct(int productId, BusinessEntities.ProductEntity productEntity)
-        //{
-        //    var success = false;
-        //    if (productEntity != null)
-        //    {
-        //        using (var scope = new TransactionScope())
-        //        {
-        //            var product = _unitOfWork.ProductRepository.GetByID(productId);
-        //            if (product != null)
-        //            {
-        //                product.ProductName = productEntity.ProductName;
-        //                _unitOfWork.ProductRepository.Update(product);
-        //                _unitOfWork.Save();
-        //                scope.Complete();
-        //                success = true;
-        //            }
-        //        }
-        //    }
-        //    return success;
-        //}
-
-        ///// <summary>
-        ///// Deletes a particular product
-        ///// </summary>
-        ///// <param name="productId"></param>
-        ///// <returns></returns>
-        //public bool DeleteApoderadoFromCola(int productId)
-        //{
-        //    var success = false;
-        //    if (productId > 0)
-        //    {
-        //        using (var scope = new TransactionScope())
-        //        {
-        //            var product = _unitOfWork.ProductRepository.GetByID(productId);
-        //            if (product != null)
-        //            {
-
-        //                _unitOfWork.ProductRepository.Delete(product);
-        //                _unitOfWork.Save();
-        //                scope.Complete();
-        //                success = true;
-        //            }
-        //        }
-        //    }
-        //    return success;
         //}
     }
 }

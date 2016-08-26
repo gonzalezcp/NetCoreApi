@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FiscaWebApiRestService")]
+[assembly: AssemblyTitle("FiscaWebApiRestService.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FiscaWebApiRestService")]
+[assembly: AssemblyProduct("FiscaWebApiRestService.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1372f7bc-af92-4c1d-b901-eade47ff77ea")]
+[assembly: Guid("2f974f0a-ad08-4846-bbe6-02c6215b4550")]
 
 // Version information for an assembly consists of the following four values:
 //
