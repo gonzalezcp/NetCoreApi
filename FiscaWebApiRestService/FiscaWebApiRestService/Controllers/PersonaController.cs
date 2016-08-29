@@ -31,7 +31,7 @@ namespace FiscaWebApiRestService.Controllers
         }
 
         // GET: api/Persona/5
-        public string Get(int id)
+        public string GetById(int id)
         {
             return "value";
         }

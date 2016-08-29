@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.DataModel", "Testing\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscaWebApiRestService", "FiscaWebApiRestService\FiscaWebApiRestService.csproj", "{C821AF55-51BB-4C99-B8F1-952B290494A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscaWebApiRestService.Tests", "FiscaWebApiRestService.Tests\FiscaWebApiRestService.Tests.csproj", "{E2426691-E299-46BA-A21F-1D7B90528B97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.FiscaWebApiRestService", "FiscaWebApiRestService.Tests\Tests.FiscaWebApiRestService.csproj", "{E2426691-E299-46BA-A21F-1D7B90528B97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
