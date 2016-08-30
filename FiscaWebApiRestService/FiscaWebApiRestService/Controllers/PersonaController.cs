@@ -35,6 +35,7 @@ namespace FiscaWebApiRestService.Controllers
         // GET: api/Persona/5
         public string GetById(int id)
         {
+            //var personas = _service.get("Del Coco");
             return "value";
         }
 

@@ -51,7 +51,7 @@ namespace FiscaWebApiRestService.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetPersonaTest()
+        public void GetPersonaControllerTest()
         {
             // Arrange
             var controller = new PersonaController(entityFrameworkService);
@@ -59,8 +59,6 @@ namespace FiscaWebApiRestService.Tests.Controllers
             var response = controller.Get();
 
             // Assert
-            //dynamic jsonObject = JObject.Parse(result.ToString());
-            
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode); // Check the HTTP status
             var responseString = response.Content.ReadAsStringAsync().Result;
             var jsonObject = JsonConvert.DeserializeObject<List<PersonaModel>>(responseString);
@@ -70,21 +68,21 @@ namespace FiscaWebApiRestService.Tests.Controllers
             Assert.AreEqual(nombre, "Loco");
         }
 
+        //[TestMethod]
+        //public void GetPersonaByIdControllerTest()
+        //{
+        //    // Arrange
+        //    ValuesController controller = new ValuesController();
+
+        //    // Act
+        //    string result = controller.Get(5);
+
+        //    // Assert
+        //    Assert.AreEqual("value", result);
+        //}
+
         [TestMethod]
-        public void GetById()
-        {
-            // Arrange
-            ValuesController controller = new ValuesController();
-
-            // Act
-            string result = controller.Get(5);
-
-            // Assert
-            Assert.AreEqual("value", result);
-        }
-
-        [TestMethod]
-        public void Post()
+        public void PostControllerTest()
         {
             // Arrange
             ValuesController controller = new ValuesController();
@@ -94,7 +92,7 @@ namespace FiscaWebApiRestService.Tests.Controllers
         }
 
         [TestMethod]
-        public void Put()
+        public void PutControllerTest()
         {
             // Arrange
             ValuesController controller = new ValuesController();
@@ -106,7 +104,7 @@ namespace FiscaWebApiRestService.Tests.Controllers
         }
 
         [TestMethod]
-        public void Delete()
+        public void DeleteControllerTest()
         {
             // Arrange
             ValuesController controller = new ValuesController();

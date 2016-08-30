@@ -43,10 +43,6 @@ namespace DataModel.Service
             
             if (personasConApellidoEF.Any())
             {
-
-                //Mapper.Initialize(cfg => {
-                //    cfg.CreateMap<persona, BusinessEntities.PersonaModel>();
-                //});
                 var personasConApellidoModel = Mapper.Map<List<persona>, List<BusinessEntities.PersonaModel>>(personasConApellidoEF);
                 return personasConApellidoModel;
             }
@@ -62,21 +58,11 @@ namespace DataModel.Service
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
-                    var EFPersona = EFPersonas.Find(idPersona);
+                    var EFPersona = EFPersonas.Where(p => p.id == idPersona).FirstOrDefault<persona>();
                     if (EFPersona != null)
                     {
 
                         Mapper.Map<BusinessEntities.PersonaModel, persona>(personaModel, EFPersona);
-
-                        // withoutt autommapper
-                        //
-                        //EFPersona.apellido = personaModel.apellido;
-                        //EFPersona.nombre = personaModel.nombre;
-                        //EFPersona.cuit = personaModel.cuit;
-                        //EFPersona.idEstadoCivil = personaModel.idEstadoCivil;
-                        //EFPersona.numeroDocumento = personaModel.numeroDocumento;
-                        //EFPersona.idTipoPersona = personaModel.idTipoPersona;
-                        //EFPersona.sexo = personaModel.sexo;
                         context.SaveChanges();
                         transaction.Commit();
                         success = true;

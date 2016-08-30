@@ -13,9 +13,22 @@ namespace DataModel.Test.Service
     [TestClass]
     public class ServiceQueryTest
     {
+        private Mock<fiscaliaEntities> mockContext;
+        private EntityFrameworkService<DataModel.fiscaliaEntities> service;
+        private Mock<DbSet<persona>> mockSet;
+        public ServiceQueryTest()
+        {
+            var table = new List<persona>();
+            mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
+            mockContext = new Mock<fiscaliaEntities>();
+            mockContext.Setup(c => c.personas).Returns(mockSet.Object);
+            // este es porque el Servicio usa Genericos
+            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
+            service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
+        }
 
         [TestMethod]
-        public void GetPersonaApellido()
+        public void GetPersonaApellidoService()
         {
             var data = new List<persona>
             {
@@ -53,28 +66,7 @@ namespace DataModel.Test.Service
         [TestMethod]
         public void TestMockSet()
         {
-            List<persona> table = new List<persona>();
-
-            //var mockSet = new Mock<DbSet<persona>>();
-            //mockSet.As<IQueryable<persona>>().Setup(m => m.Provider).Returns(() => table.AsQueryable().Provider);
-            //mockSet.As<IQueryable<persona>>().Setup(m => m.Expression).Returns(() => table.AsQueryable().Expression);
-            //mockSet.As<IQueryable<persona>>().Setup(m => m.ElementType).Returns(() => table.AsQueryable().ElementType);
-            //mockSet.As<IQueryable<persona>>().Setup(m => m.GetEnumerator()).Returns(() => table.AsQueryable().GetEnumerator());
-
-            //mockSet.Setup(set => set.Add(It.IsAny<persona>())).Callback<persona>(table.Add);
-            //mockSet.Setup(set => set.AddRange(It.IsAny<IEnumerable<persona>>())).Callback<IEnumerable<persona>>(table.AddRange);
-            //mockSet.Setup(set => set.Remove(It.IsAny<persona>())).Callback<persona>(t => table.Remove(t));
-            //mockSet.Setup(set => set.RemoveRange(It.IsAny<IEnumerable<persona>>())).Callback<IEnumerable<persona>>(ts =>
-            //{
-            //    foreach (var t in ts) { table.Remove(t); }
-            //});
-
-            var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
-            var mockContext = new Mock<fiscaliaEntities>();
-            mockContext.Setup(c => c.personas).Returns(mockSet.Object);
-            // este es porque el Servicio usa Genericos
-            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
-            table.Add(
+            mockContext.Object.personas.Add(
                 new persona
                 {
                     id = 1,
@@ -83,7 +75,8 @@ namespace DataModel.Test.Service
                     sexo = true,
                     numeroDocumento = 66666
                 });
-            table.Add(
+
+            mockContext.Object.personas.Add(
                 new persona
                 {
                     id = 2,
@@ -95,26 +88,19 @@ namespace DataModel.Test.Service
                         
 
             //Test
-            var service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
+            Assert.AreEqual(2, mockContext.Object.personas.Count());
             //delete
             bool wasDeleted = service.DeletePersonaById(1);
             //cheque que fueron borradas
             mockSet.Verify(x => x.Remove(It.IsAny<persona>()));
-            Assert.AreEqual(1, table.Count());
+            Assert.AreEqual(1, mockContext.Object.personas.Count());
         }
 
         [TestMethod]
-        public void DeletePersona()
+        public void DeletePersonaService()
         {
-            List<persona> table = new List<persona>();
-            var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
-            var mockContext = new Mock<fiscaliaEntities>();
-            mockContext.Setup(c => c.personas).Returns(mockSet.Object);
-            // este es porque el Servicio usa Genericos
-            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
-
-            table.Add(
-            new persona
+           mockContext.Object.personas.Add(
+           new persona
             {
                 id = 1,
                 nombre = "Loco",
@@ -122,7 +108,7 @@ namespace DataModel.Test.Service
                 sexo = true,
                 numeroDocumento = 66666
             });
-            table.Add(
+            mockContext.Object.personas.Add(
             new persona
             {
                 id = 2,
@@ -131,52 +117,57 @@ namespace DataModel.Test.Service
                 sexo = true,
                 numeroDocumento = 66666
             });
-            //Test
-            var service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
 
-            //delete
+            Assert.AreEqual(2, mockContext.Object.personas.Count());
             bool wasDeleted = service.DeletePersonaById(1);
-            Assert.AreEqual(1, table.Count());
+            //delete
+            Assert.AreEqual(1, mockContext.Object.personas.Count());
         }
 
-
         [TestMethod]
-        public void UpdatePersona()
+        public void UpdatePersonaService()
         {
-            List<persona> table = new List<persona>();
-            var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
-            var mockContext = new Mock<fiscaliaEntities>();
-            mockContext.Setup(c => c.personas).Returns(mockSet.Object);
-            // este es porque el Servicio usa Genericos
-            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
-
-            table.Add(
+            mockContext.Object.personas.Add(
             new persona
             {
-                id = 1,
+                id = 37,
                 nombre = "Loco",
                 apellido = "Del Coco",
                 sexo = true,
                 numeroDocumento = 66666
             });
-            table.Add(
-            new persona
+
+            var personaModel = new PersonaModel
             {
-                id = 2,
-                nombre = "Chiflado",
+                id = 37,
+                nombre = "Loco modificado",
+                apellido = "Del Coco PUTO",
+                sexo = true,
+                numeroDocumento = 66666
+            };
+            bool wasDeleted = service.UpdatePersona(37, personaModel);
+            var nombre = mockContext.Object.personas.Select(p => p.nombre).FirstOrDefault();
+            Assert.AreEqual("Loco modificado", nombre);
+        }
+
+        [TestMethod]
+        public void CreatePersonasService()
+        {
+            ////Test
+
+            int idPersonaNueva = service.CreatePersonas(
+            new PersonaModel
+            {
+                id = 189,
+                nombre = "Loco",
                 apellido = "Del Coco",
                 sexo = true,
                 numeroDocumento = 66666
             });
-            //Test
-            var service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
-
-            //delete
-            bool wasDeleted = service.DeletePersonaById(1);
-            Assert.AreEqual(1, table.Count());
+            int idInsert = mockContext.Object.personas.Select(p => p.id).FirstOrDefault();
+            Assert.AreEqual(189, idInsert);
+            Assert.AreEqual(1, mockContext.Object.personas.Count());
         }
-
-
 
     }
 }
