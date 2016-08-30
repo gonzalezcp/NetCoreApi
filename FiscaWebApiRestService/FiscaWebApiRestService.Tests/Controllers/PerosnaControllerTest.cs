@@ -82,13 +82,36 @@ namespace FiscaWebApiRestService.Tests.Controllers
         //}
 
         [TestMethod]
-        public void PostControllerTest()
+        public void PostPersonaControllerTest()
         {
-            // Arrange
-            ValuesController controller = new ValuesController();
-            // Act
-            controller.Post("value");
-            // Assert
+            var controller = new PersonaController(entityFrameworkService);
+            Helper.SetupControllerForTests(controller, HttpMethod.Post, "Persona");
+            var personaNueva = new PersonaModel
+            {
+                nombre = "Loco",
+                apellido = "Del Coco",
+                sexo = true,
+                numeroDocumento = 66666
+            };
+            controller.Post(personaNueva);
+            //var response = controller.Post();
+
+            //// Assert
+            //Assert.AreEqual(HttpStatusCode.OK, response.StatusCode); // Check the HTTP status
+            //var responseString = response.Content.ReadAsStringAsync().Result;
+            //var jsonObject = JsonConvert.DeserializeObject<List<PersonaModel>>(responseString);
+            //Assert.AreEqual(jsonObject.Any(), true);
+            ////chequeo que esten todas las propiedades
+            //string nombre = jsonObject[0].nombre;
+            //Assert.AreEqual(nombre, "Loco");
+
+
+
+            //// Arrange
+            //ValuesController controller = new ValuesController();
+            //// Act
+            //controller.Post("value");
+            //// Assert
         }
 
         [TestMethod]

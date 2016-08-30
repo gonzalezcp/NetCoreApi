@@ -40,18 +40,27 @@ namespace FiscaWebApiRestService.Controllers
         }
 
         // POST: api/Persona
-        public void Post([FromBody]string value)
+        public int Post([FromBody]PersonaModel personaModel)
         {
+            return _service.CreatePersonas(personaModel);
         }
 
         // PUT: api/Persona/5
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody]PersonaModel personaModel)
         {
+            if (id > 0)
+            {
+                return _service.UpdatePersona(id, personaModel);
+            }
+            return false;
         }
 
         // DELETE: api/Persona/5
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            if (id > 0)
+                return _service.DeletePersonaById(id);
+            return false;
         }
     }
 }
