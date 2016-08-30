@@ -8,7 +8,7 @@ using System.Data.Entity;
 using Moq;
 using DataModel.Service;
 
-namespace Testing.Service
+namespace DataModel.Test.Service
 {
     [TestClass]
     public class ServiceQueryTest

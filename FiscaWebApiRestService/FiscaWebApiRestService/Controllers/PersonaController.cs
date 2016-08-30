@@ -18,11 +18,13 @@ namespace FiscaWebApiRestService.Controllers
         }
 
         // GET: api/Persona
+        [HttpGet]
         public HttpResponseMessage Get()
         {
-            var personas = _service.GetPersonaApellido("Negro");
+            var personas = _service.GetPersonaApellido("Del Coco");
             if (personas != null)
             {
+
                 var personasModel = personas as List<PersonaModel> ?? personas.ToList();
                 if (personasModel.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, personasModel);

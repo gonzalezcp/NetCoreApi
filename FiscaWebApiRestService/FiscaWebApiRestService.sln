@@ -9,11 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessEntities", "Busines
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAMano", "TestAMano\TestAMano.csproj", "{3DEE1C22-DE3E-43D8-8B59-7F1BF587353C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.DataModel", "Testing\Test.DataModel.csproj", "{39229C01-E664-4375-9F09-476967BFD4B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel.Test", "Testing\DataModel.Test.csproj", "{39229C01-E664-4375-9F09-476967BFD4B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscaWebApiRestService", "FiscaWebApiRestService\FiscaWebApiRestService.csproj", "{C821AF55-51BB-4C99-B8F1-952B290494A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.FiscaWebApiRestService", "FiscaWebApiRestService.Tests\Tests.FiscaWebApiRestService.csproj", "{E2426691-E299-46BA-A21F-1D7B90528B97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscaWebApiRestService.Tests", "FiscaWebApiRestService.Tests\FiscaWebApiRestService.Tests.csproj", "{E2426691-E299-46BA-A21F-1D7B90528B97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

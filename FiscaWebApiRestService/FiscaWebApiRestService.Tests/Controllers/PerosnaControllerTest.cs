@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FiscaWebApiRestService;
 using FiscaWebApiRestService.Controllers;
 using DataModel;
 using DataModel.Service;
 using Moq;
 using BusinessEntities;
 using System.Net;
-using Newtonsoft.Json.Linq;
-using System.Web.Http.Results;
 using Newtonsoft.Json;
 
 namespace FiscaWebApiRestService.Tests.Controllers
@@ -22,6 +16,7 @@ namespace FiscaWebApiRestService.Tests.Controllers
     public class PersonaControllerTest
     {
         private EntityFrameworkService<fiscaliaEntities> entityFrameworkService;
+
         public PersonaControllerTest()
         {
             List<persona> table = new List<persona>();
@@ -30,8 +25,7 @@ namespace FiscaWebApiRestService.Tests.Controllers
             mockContext.Setup(c => c.personas).Returns(mockSet.Object);
             // este es porque el Servicio usa Genericos
             mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
-
-            table.Add(
+            mockContext.Object.personas.Add(
             new persona
             {
                 id = 1,
@@ -40,7 +34,7 @@ namespace FiscaWebApiRestService.Tests.Controllers
                 sexo = true,
                 numeroDocumento = 66666
             });
-            table.Add(
+            mockContext.Object.personas.Add(
             new persona
             {
                 id = 2,
@@ -49,34 +43,31 @@ namespace FiscaWebApiRestService.Tests.Controllers
                 sexo = true,
                 numeroDocumento = 66666
             });
+
             //Test
             entityFrameworkService = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
+
 
         }
 
         [TestMethod]
-        public void GetPersoanJsonFormat()
+        public void GetPersonaTest()
         {
             // Arrange
             var controller = new PersonaController(entityFrameworkService);
-
-            // Act
+            Helper.SetupControllerForTests(controller, HttpMethod.Get, "Persona");
             var response = controller.Get();
 
             // Assert
             //dynamic jsonObject = JObject.Parse(result.ToString());
-            var responseResult = JsonConvert.DeserializeObject<List<PersonaModel>>(response.Content.ReadAsStringAsync().Result);
+            
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode); // Check the HTTP status
-            Assert.AreEqual(responseResult.Any(), true);
-            //var comparer = new ProductComparer();
-            //CollectionAssert.AreEqual(
-            //    responseResult.OrderBy(product => product, comparer),
-            //    _products.OrderBy(product => product, comparer), comparer);
-
-            //Assert.Equal(status, 0);
-            //Assert.AreEqual(10, personaModel.id);
-            //Assert.AreEqual("value1", result.ElementAt(0));
-            //Assert.AreEqual("value2", result.ElementAt(1));
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var jsonObject = JsonConvert.DeserializeObject<List<PersonaModel>>(responseString);
+            Assert.AreEqual(jsonObject.Any(), true);
+            //chequeo que esten todas las propiedades
+            string nombre = jsonObject[0].nombre;
+            Assert.AreEqual(nombre, "Loco");
         }
 
         [TestMethod]
@@ -97,10 +88,8 @@ namespace FiscaWebApiRestService.Tests.Controllers
         {
             // Arrange
             ValuesController controller = new ValuesController();
-
             // Act
             controller.Post("value");
-
             // Assert
         }
 
@@ -129,3 +118,4 @@ namespace FiscaWebApiRestService.Tests.Controllers
         }
     }
 }
+

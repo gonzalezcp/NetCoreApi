@@ -7,7 +7,7 @@ using System.Data.Entity;
 using BusinessEntities;
 using System.Collections.Generic;
 
-namespace Testing.Service
+namespace DataModel.Test.Service
 {
     [TestClass]
     public class ServiceNonQueryTest

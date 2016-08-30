@@ -35,14 +35,20 @@ namespace TestAMano
             //var ape = servicio.GetPersonaApellido("Del Coco");
             //bool wasDeleted = servicio.DeletePersonaById(638282);
 
-            Ninject.IKernel kernal = new StandardKernel();
-            kernal.Bind<IService>().To<EntityFrameworkService<fiscaliaEntities>>();
-            var instance = kernal.Get<EntityFrameworkService<fiscaliaEntities>>();
-            instance.GetPersonaApellido("Del Coco");
-            Console.ReadLine();
+            ////ninject
+            //Ninject.IKernel kernal = new StandardKernel();
+            //kernal.Bind<IService>().To<EntityFrameworkService<fiscaliaEntities>>();
+            //var instance = kernal.Get<EntityFrameworkService<fiscaliaEntities>>();
+            //instance.GetPersonaApellido("Del Coco");
+            //Console.ReadLine();
 
+            List<persona> table = new List<persona>();
+            var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
+            var mockedDbContext = new Mock<fiscaliaEntities>();
+            mockedDbContext.Setup(c => c.personas).Returns(mockSet.Object);
+            // este es porque el Servicio usa Genericos
+            mockedDbContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
 
-            var mockedDbContext = EntityFrameworkMockHelper.GetMockContext<DataModel.fiscaliaEntities>();
             mockedDbContext.Object.personas.Add(
             new persona
             {

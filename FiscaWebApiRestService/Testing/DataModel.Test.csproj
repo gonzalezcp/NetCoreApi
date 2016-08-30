@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="Service\ServiceNonQueryTest.cs" />
     <Compile Include="Service\ServiceQueryTest.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

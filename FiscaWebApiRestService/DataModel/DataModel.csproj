@@ -97,11 +97,9 @@
       <DependentUpon>Fiscalia.tt</DependentUpon>
     </Compile>
     <Compile Include="Service\EFMockHelper.cs" />
-    <Compile Include="Service\EntityFrameworkMockHelper.cs" />
     <Compile Include="Service\EntityFrameworkService.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\MockedDbContext.cs" />
     <Compile Include="tiposDistribucione.cs">
       <DependentUpon>Fiscalia.tt</DependentUpon>
     </Compile>
