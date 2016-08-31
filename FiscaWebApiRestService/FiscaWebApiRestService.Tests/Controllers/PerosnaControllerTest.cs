@@ -9,19 +9,22 @@ using Moq;
 using BusinessEntities;
 using System.Net;
 using Newtonsoft.Json;
+using System.Data.Entity;
 
 namespace FiscaWebApiRestService.Tests.Controllers
 {
     [TestClass]
     public class PersonaControllerTest
     {
-        private EntityFrameworkService<fiscaliaEntities> entityFrameworkService;
+        private Mock<fiscaliaEntities> mockContext;
+        private EntityFrameworkService<DataModel.fiscaliaEntities> entityFrameworkService;
+        private Mock<DbSet<persona>> mockSet;
 
         public PersonaControllerTest()
         {
             List<persona> table = new List<persona>();
-            var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
-            var mockContext = new Mock<fiscaliaEntities>();
+            mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
+            mockContext = new Mock<fiscaliaEntities>();
             mockContext.Setup(c => c.personas).Returns(mockSet.Object);
             // este es porque el Servicio usa Genericos
             mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
@@ -68,19 +71,6 @@ namespace FiscaWebApiRestService.Tests.Controllers
             Assert.AreEqual(nombre, "Loco");
         }
 
-        //[TestMethod]
-        //public void GetPersonaByIdControllerTest()
-        //{
-        //    // Arrange
-        //    ValuesController controller = new ValuesController();
-
-        //    // Act
-        //    string result = controller.Get(5);
-
-        //    // Assert
-        //    Assert.AreEqual("value", result);
-        //}
-
         [TestMethod]
         public void PostPersonaControllerTest()
         {
@@ -89,29 +79,15 @@ namespace FiscaWebApiRestService.Tests.Controllers
             var personaNueva = new PersonaModel
             {
                 nombre = "Loco",
-                apellido = "Del Coco",
+                apellido = "Del Mierda",
                 sexo = true,
                 numeroDocumento = 66666
             };
-            controller.Post(personaNueva);
-            //var response = controller.Post();
+            var response = controller.Post(personaNueva);
 
             //// Assert
-            //Assert.AreEqual(HttpStatusCode.OK, response.StatusCode); // Check the HTTP status
-            //var responseString = response.Content.ReadAsStringAsync().Result;
-            //var jsonObject = JsonConvert.DeserializeObject<List<PersonaModel>>(responseString);
-            //Assert.AreEqual(jsonObject.Any(), true);
-            ////chequeo que esten todas las propiedades
-            //string nombre = jsonObject[0].nombre;
-            //Assert.AreEqual(nombre, "Loco");
-
-
-
-            //// Arrange
-            //ValuesController controller = new ValuesController();
-            //// Act
-            //controller.Post("value");
-            //// Assert
+            //este no anda porque no crea la identidad en memoria falta algo del mock
+            Assert.AreEqual(personaNueva.apellido, mockContext.Object.personas.Last().apellido);
         }
 
         [TestMethod]
