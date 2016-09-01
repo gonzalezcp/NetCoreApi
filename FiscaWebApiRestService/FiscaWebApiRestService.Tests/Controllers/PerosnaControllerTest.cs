@@ -18,18 +18,18 @@ namespace FiscaWebApiRestService.Tests.Controllers
     {
         private Mock<fiscaliaEntities> mockContext;
         private EntityFrameworkService<DataModel.fiscaliaEntities> entityFrameworkService;
-        private Mock<DbSet<persona>> mockSet;
+        private Mock<DbSet<EFPersona>> mockSet;
 
         public PersonaControllerTest()
         {
-            List<persona> table = new List<persona>();
-            mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
+            List<EFPersona> table = new List<EFPersona>();
+            mockSet = EFMockHelper<EFPersona, fiscaliaEntities>.getMockedSet(table);
             mockContext = new Mock<fiscaliaEntities>();
-            mockContext.Setup(c => c.personas).Returns(mockSet.Object);
+            mockContext.Setup(c => c.EFPersonas).Returns(mockSet.Object);
             // este es porque el Servicio usa Genericos
-            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
-            mockContext.Object.personas.Add(
-            new persona
+            mockContext.Setup(m => m.Set<EFPersona>()).Returns(mockSet.Object);
+            mockContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 id = 1,
                 nombre = "Loco",
@@ -37,8 +37,8 @@ namespace FiscaWebApiRestService.Tests.Controllers
                 sexo = true,
                 numeroDocumento = 66666
             });
-            mockContext.Object.personas.Add(
-            new persona
+            mockContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 id = 2,
                 nombre = "Chiflado",
@@ -87,7 +87,7 @@ namespace FiscaWebApiRestService.Tests.Controllers
 
             //// Assert
             //este no anda porque no crea la identidad en memoria falta algo del mock
-            Assert.AreEqual(personaNueva.apellido, mockContext.Object.personas.Last().apellido);
+            Assert.AreEqual(personaNueva.apellido, mockContext.Object.EFPersonas.Last().apellido);
         }
 
         [TestMethod]

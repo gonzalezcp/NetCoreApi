@@ -13,7 +13,7 @@ namespace TestAMano
         public void insertarPersona()
         {
             //create DBContext object
-            var personaNueva = new persona
+            var personaNueva = new EFPersona
             {
                 nombre = "Loco",
                 apellido = "Del Coco",
@@ -22,7 +22,7 @@ namespace TestAMano
             };
             using (var context = new DataModel.fiscaliaEntities())
             {
-                context.personas.Add(personaNueva);
+                context.EFPersonas.Add(personaNueva);
                 context.SaveChanges();
             }
         }
@@ -31,7 +31,7 @@ namespace TestAMano
         {
             using (var context = new DataModel.fiscaliaEntities())
             {
-                var pesonas = (from p in context.personas where p.apellido == "Gonzalez" select p).ToList();
+                var pesonas = (from p in context.EFPersonas where p.apellido == "Gonzalez" select p).ToList();
                 foreach (var p in pesonas)
                 {
                     Console.WriteLine(p.apellido + ", " + p.nombre);

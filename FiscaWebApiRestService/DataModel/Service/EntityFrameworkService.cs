@@ -24,8 +24,8 @@ namespace DataModel.Service
         private void autoMapperCfg()
         {
             Mapper.Initialize(cfg => {
-                cfg.CreateMap<persona, BusinessEntities.PersonaModel>();
-                cfg.CreateMap<BusinessEntities.PersonaModel, persona>();
+                cfg.CreateMap<EFPersona, BusinessEntities.PersonaModel>();
+                cfg.CreateMap<BusinessEntities.PersonaModel, EFPersona>();
             });
 
         }
@@ -36,14 +36,14 @@ namespace DataModel.Service
 
         public IEnumerable<BusinessEntities.PersonaModel> GetPersonaApellido(String apellido)
         {
-            var EFPersonas = context.Set<persona>();
+            var EFPersonas = context.Set<EFPersona>();
             var personasConApellidoEF = (from p in EFPersonas
                                         where p.apellido == apellido
                                             select p).ToList();
             
             if (personasConApellidoEF.Any())
             {
-                var personasConApellidoModel = Mapper.Map<List<persona>, List<BusinessEntities.PersonaModel>>(personasConApellidoEF);
+                var personasConApellidoModel = Mapper.Map<List<EFPersona>, List<BusinessEntities.PersonaModel>>(personasConApellidoEF);
                 return personasConApellidoModel;
             }
             return null;
@@ -53,17 +53,45 @@ namespace DataModel.Service
         public bool UpdatePersona(int idPersona, BusinessEntities.PersonaModel personaModel)
         {
             var success = false;
-            var EFPersonas = context.Set<persona>();
+            var EFPersonas = context.Set<EFPersona>();
             if (personaModel != null)
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
-                    var EFPersona = EFPersonas.Where(p => p.id == idPersona).FirstOrDefault<persona>();
+                    var EFPersona = EFPersonas.Where(p => p.id == idPersona).FirstOrDefault<EFPersona>();
                     if (EFPersona != null)
                     {
 
-                        Mapper.Map<BusinessEntities.PersonaModel, persona>(personaModel, EFPersona);
-                        context.SaveChanges();
+                        EFPersona.apellido = personaModel.apellido;
+                        EFPersona.nombre = personaModel.nombre;
+                        EFPersona.numeroDocumento = personaModel.numeroDocumento;
+                        EFPersona.cuit = personaModel.cuit;
+                        EFPersona.idTipoPersona = EFPersona.idTipoPersona;
+                        EFPersona.idTipoDocumento = personaModel.idTipoDocumento;
+                        EFPersona.idTipoSociedad = EFPersona.idTipoSociedad;
+                        EFPersona.fechaAlta = personaModel.fechaAlta;
+                        //Mapper.Map<BusinessEntities.PersonaModel, EFPersona>(personaModel, EFPersona);
+                        try
+                        {
+                            context.SaveChanges();
+                        }
+                        catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                        {
+                            Exception raise = dbEx;
+                            foreach (var validationErrors in dbEx.EntityValidationErrors)
+                            {
+                                foreach (var validationError in validationErrors.ValidationErrors)
+                                {
+                                    string message = string.Format("{0}:{1}",
+                                        validationErrors.Entry.Entity.ToString(),
+                                        validationError.ErrorMessage);
+                                    // raise a new exception nesting
+                                    // the current instance as InnerException
+                                    raise = new InvalidOperationException(message, raise);
+                                }
+                            }
+                            throw raise;
+                        }
                         transaction.Commit();
                         success = true;
                     }
@@ -78,7 +106,7 @@ namespace DataModel.Service
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
-                    var EFPersonas = context.Set<persona>();
+                    var EFPersonas = context.Set<EFPersona>();
                     var EFPersonaToDelte = EFPersonas.SingleOrDefault(p => p.id == idPersona);
                     if (EFPersonaToDelte != null)
                     {
@@ -99,8 +127,8 @@ namespace DataModel.Service
         {
             using (var transaction = context.Database.BeginTransaction())
             {
-                var persona = Mapper.Map<BusinessEntities.PersonaModel, persona>(personaModel);
-                var EFPersonas = context.Set<persona>();
+                var persona = Mapper.Map<BusinessEntities.PersonaModel, EFPersona>(personaModel);
+                var EFPersonas = context.Set<EFPersona>();
                 try
                 {
                     EFPersonas.Add(persona);

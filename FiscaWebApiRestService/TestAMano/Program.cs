@@ -15,8 +15,8 @@ namespace TestAMano
     {
         static void Main(string[] args)
         {
-            //var servicio = new DataModel.Service.EntityFrameworkService<DataModel.fiscaliaEntities>(new DataModel.fiscaliaEntities());
-            //var personas = servicio.GetPersonaApellido("Gonzalez");
+            var servicio = new DataModel.Service.EntityFrameworkService<DataModel.fiscaliaEntities>(new DataModel.fiscaliaEntities());
+            var personas = servicio.GetPersonaApellido("Gonzalez");
             //foreach (PersonaModel p in personas)
             //{
             //    Console.WriteLine(p.apellido + ", " + p.nombre);
@@ -42,15 +42,15 @@ namespace TestAMano
             //instance.GetPersonaApellido("Del Coco");
             //Console.ReadLine();
 
-            List<persona> table = new List<persona>();
-            var mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
+            List<EFPersona> table = new List<EFPersona>();
+            var mockSet = EFMockHelper<EFPersona, fiscaliaEntities>.getMockedSet(table);
             var mockedDbContext = new Mock<fiscaliaEntities>();
-            mockedDbContext.Setup(c => c.personas).Returns(mockSet.Object);
+            mockedDbContext.Setup(c => c.EFPersonas).Returns(mockSet.Object);
             // este es porque el Servicio usa Genericos
-            mockedDbContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
+            mockedDbContext.Setup(m => m.Set<EFPersona>()).Returns(mockSet.Object);
 
-            mockedDbContext.Object.personas.Add(
-            new persona
+            mockedDbContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 id = 1,
                 nombre = "Loco",
@@ -58,8 +58,8 @@ namespace TestAMano
                 sexo = true,
                 numeroDocumento = 66666
             });
-            mockedDbContext.Object.personas.Add(
-            new persona
+            mockedDbContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 id = 2,
                 nombre = "Chiflado",

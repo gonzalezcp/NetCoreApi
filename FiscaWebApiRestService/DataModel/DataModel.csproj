@@ -72,6 +72,9 @@
     <Compile Include="colaDistribucionLog.cs">
       <DependentUpon>Fiscalia.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFPersona.cs">
+      <DependentUpon>Fiscalia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Fiscalia.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -91,9 +94,6 @@
       <DependentUpon>Fiscalia.tt</DependentUpon>
     </Compile>
     <Compile Include="Juicios_Registro.cs">
-      <DependentUpon>Fiscalia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="persona.cs">
       <DependentUpon>Fiscalia.tt</DependentUpon>
     </Compile>
     <Compile Include="Service\EFMockHelper.cs" />

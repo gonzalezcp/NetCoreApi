@@ -40,32 +40,6 @@
           <Property Name="numeroTitulo" Type="varchar" MaxLength="25" />
           <Property Name="idTipoEvento" Type="int" />
         </EntityType>
-        <EntityType Name="personas">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="idTipoPersona" Type="int" />
-          <Property Name="apellido" Type="varchar" MaxLength="60" Nullable="false" />
-          <Property Name="nombre" Type="varchar" MaxLength="30" />
-          <Property Name="idTipoDocumento" Type="int" />
-          <Property Name="cuit" Type="varchar" MaxLength="13" />
-          <Property Name="numeroDocumento" Type="numeric" Precision="9" Scale="0" />
-          <Property Name="idEstadoCivil" Type="int" />
-          <Property Name="nacionalidad" Type="varchar" MaxLength="50" />
-          <Property Name="idTipoSociedad" Type="int" />
-          <Property Name="tipoPersoneria" Type="varchar" MaxLength="50" />
-          <Property Name="registro" Type="nchar" MaxLength="50" />
-          <Property Name="numeroSociedad" Type="nchar" MaxLength="50" />
-          <Property Name="fechaInscripcion" Type="nchar" MaxLength="50" />
-          <Property Name="tomo" Type="nchar" MaxLength="50" />
-          <Property Name="letra" Type="nchar" MaxLength="50" />
-          <Property Name="folio" Type="nchar" MaxLength="50" />
-          <Property Name="sexo" Type="bit" />
-          <Property Name="fechaAlta" Type="datetime" />
-          <Property Name="idUsuarioAlta" Type="int" />
-          <Property Name="razonSocial" Type="varchar" MaxLength="60" StoreGeneratedPattern="Computed" Nullable="false" />
-        </EntityType>
         <EntityType Name="tiposDistribuciones">
           <Key>
             <PropertyRef Name="id" />
@@ -95,6 +69,36 @@
           <Property Name="idUsuarioBaja" Type="int" />
           <Property Name="codigoSeguridad" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="tratamiento" Type="varchar" MaxLength="6" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'fiscalia.dbo.EFPersonas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EFPersonas">
+          <Key>
+            <PropertyRef Name="id" />
+            
+            
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTipoPersona" Type="int" />
+          <Property Name="apellido" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="30" />
+          <Property Name="idTipoDocumento" Type="int" />
+          <Property Name="cuit" Type="varchar" MaxLength="13" />
+          <Property Name="numeroDocumento" Type="numeric" Precision="9" Scale="0" />
+          <Property Name="idEstadoCivil" Type="int" />
+          <Property Name="nacionalidad" Type="varchar" MaxLength="50" />
+          <Property Name="idTipoSociedad" Type="int" />
+          <Property Name="tipoPersoneria" Type="varchar" MaxLength="50" />
+          <Property Name="registro" Type="nchar" MaxLength="50" />
+          <Property Name="numeroSociedad" Type="nchar" MaxLength="50" />
+          <Property Name="fechaInscripcion" Type="nchar" MaxLength="50" />
+          <Property Name="tomo" Type="nchar" MaxLength="50" />
+          <Property Name="letra" Type="nchar" MaxLength="50" />
+          <Property Name="folio" Type="nchar" MaxLength="50" />
+          <Property Name="sexo" Type="bit" />
+          <Property Name="fechaAlta" Type="datetime" />
+          <Property Name="idUsuarioAlta" Type="int" />
+          <Property Name="razonSocial" Type="varchar" MaxLength="60" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -179,15 +183,85 @@ warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="EFDeletePersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPersona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="EFinsertPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idTipoPersona" Type="int" Mode="In" />
+          <Parameter Name="apellido" Type="varchar" Mode="In" />
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="idTipoDocumento" Type="int" Mode="In" />
+          <Parameter Name="cuit" Type="varchar" Mode="In" />
+          <Parameter Name="numeroDocumento" Type="numeric" Mode="In" />
+          <Parameter Name="idEstadoCivil" Type="int" Mode="In" />
+          <Parameter Name="nacionalidad" Type="varchar" Mode="In" />
+          <Parameter Name="idTipoSociedad" Type="int" Mode="In" />
+          <Parameter Name="tipoPersoneria" Type="varchar" Mode="In" />
+          <Parameter Name="registro" Type="nchar" Mode="In" />
+          <Parameter Name="numeroSociedad" Type="nchar" Mode="In" />
+          <Parameter Name="fechaInscripcion" Type="nchar" Mode="In" />
+          <Parameter Name="tomo" Type="nchar" Mode="In" />
+          <Parameter Name="letra" Type="nchar" Mode="In" />
+          <Parameter Name="folio" Type="nchar" Mode="In" />
+          <Parameter Name="sexo" Type="bit" Mode="In" />
+          <Parameter Name="fechaAlta" Type="datetime" Mode="In" />
+          <Parameter Name="idUsuarioAlta" Type="int" Mode="In" />
+        </Function>
+        <Function Name="EFUpdatePersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="idTipoPersona" Type="int" Mode="In" />
+          <Parameter Name="apellido" Type="varchar" Mode="In" />
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="idTipoDocumento" Type="int" Mode="In" />
+          <Parameter Name="cuit" Type="varchar" Mode="In" />
+          <Parameter Name="numeroDocumento" Type="numeric" Mode="In" />
+          <Parameter Name="idEstadoCivil" Type="int" Mode="In" />
+          <Parameter Name="nacionalidad" Type="varchar" Mode="In" />
+          <Parameter Name="idTipoSociedad" Type="int" Mode="In" />
+          <Parameter Name="tipoPersoneria" Type="varchar" Mode="In" />
+          <Parameter Name="registro" Type="nchar" Mode="In" />
+          <Parameter Name="numeroSociedad" Type="nchar" Mode="In" />
+          <Parameter Name="fechaInscripcion" Type="nchar" Mode="In" />
+          <Parameter Name="tomo" Type="nchar" Mode="In" />
+          <Parameter Name="letra" Type="nchar" Mode="In" />
+          <Parameter Name="folio" Type="nchar" Mode="In" />
+          <Parameter Name="sexo" Type="bit" Mode="In" />
+          <Parameter Name="fechaAlta" Type="datetime" Mode="In" />
+          <Parameter Name="idUsuarioAlta" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetJuiciosByUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idUsuario" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="fiscaliaModelStoreContainer">
           <EntitySet Name="colaDistribucion" EntityType="Self.colaDistribucion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="colaDistribucionLog" EntityType="Self.colaDistribucionLog" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="personas" EntityType="Self.personas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tiposDistribuciones" EntityType="Self.tiposDistribuciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EFPersonas" EntityType="Self.EFPersonas" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EFPersonas].[id] AS [id], 
+    [EFPersonas].[idTipoPersona] AS [idTipoPersona], 
+    [EFPersonas].[apellido] AS [apellido], 
+    [EFPersonas].[nombre] AS [nombre], 
+    [EFPersonas].[idTipoDocumento] AS [idTipoDocumento], 
+    [EFPersonas].[cuit] AS [cuit], 
+    [EFPersonas].[numeroDocumento] AS [numeroDocumento], 
+    [EFPersonas].[idEstadoCivil] AS [idEstadoCivil], 
+    [EFPersonas].[nacionalidad] AS [nacionalidad], 
+    [EFPersonas].[idTipoSociedad] AS [idTipoSociedad], 
+    [EFPersonas].[tipoPersoneria] AS [tipoPersoneria], 
+    [EFPersonas].[registro] AS [registro], 
+    [EFPersonas].[numeroSociedad] AS [numeroSociedad], 
+    [EFPersonas].[fechaInscripcion] AS [fechaInscripcion], 
+    [EFPersonas].[tomo] AS [tomo], 
+    [EFPersonas].[letra] AS [letra], 
+    [EFPersonas].[folio] AS [folio], 
+    [EFPersonas].[sexo] AS [sexo], 
+    [EFPersonas].[fechaAlta] AS [fechaAlta], 
+    [EFPersonas].[idUsuarioAlta] AS [idUsuarioAlta], 
+    [EFPersonas].[razonSocial] AS [razonSocial]
+    FROM [dbo].[EFPersonas] AS [EFPersonas]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Juicios_Registro" EntityType="Self.Juicios_Registro" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Juicios_Registro].[id] AS [id], 
@@ -336,7 +410,53 @@ warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a pri
           <Parameter Name="idUsuario" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Juicios_Registro" EntityType="fiscaliaModel.Juicios_Registro" />
-          <EntitySet Name="personas" EntityType="fiscaliaModel.persona" />
+          <EntitySet Name="EFPersonas" EntityType="fiscaliaModel.EFPersona" />
+          <FunctionImport Name="EFDeletePersona">
+          <Parameter Name="idPersona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EFinsertPersona" ReturnType="Collection(Int32)">
+            <Parameter Name="idTipoPersona" Mode="In" Type="Int32" />
+            <Parameter Name="apellido" Mode="In" Type="String" />
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="idTipoDocumento" Mode="In" Type="Int32" />
+            <Parameter Name="cuit" Mode="In" Type="String" />
+            <Parameter Name="numeroDocumento" Mode="In" Type="Decimal" />
+            <Parameter Name="idEstadoCivil" Mode="In" Type="Int32" />
+            <Parameter Name="nacionalidad" Mode="In" Type="String" />
+            <Parameter Name="idTipoSociedad" Mode="In" Type="Int32" />
+            <Parameter Name="tipoPersoneria" Mode="In" Type="String" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+            <Parameter Name="numeroSociedad" Mode="In" Type="String" />
+            <Parameter Name="fechaInscripcion" Mode="In" Type="String" />
+            <Parameter Name="tomo" Mode="In" Type="String" />
+            <Parameter Name="letra" Mode="In" Type="String" />
+            <Parameter Name="folio" Mode="In" Type="String" />
+            <Parameter Name="sexo" Mode="In" Type="Boolean" />
+            <Parameter Name="fechaAlta" Mode="In" Type="DateTime" />
+            <Parameter Name="idUsuarioAlta" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EFUpdatePersona">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="idTipoPersona" Mode="In" Type="Int32" />
+            <Parameter Name="apellido" Mode="In" Type="String" />
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="idTipoDocumento" Mode="In" Type="Int32" />
+            <Parameter Name="cuit" Mode="In" Type="String" />
+            <Parameter Name="numeroDocumento" Mode="In" Type="Decimal" />
+            <Parameter Name="idEstadoCivil" Mode="In" Type="Int32" />
+            <Parameter Name="nacionalidad" Mode="In" Type="String" />
+            <Parameter Name="idTipoSociedad" Mode="In" Type="Int32" />
+            <Parameter Name="tipoPersoneria" Mode="In" Type="String" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+            <Parameter Name="numeroSociedad" Mode="In" Type="String" />
+            <Parameter Name="fechaInscripcion" Mode="In" Type="String" />
+            <Parameter Name="tomo" Mode="In" Type="String" />
+            <Parameter Name="letra" Mode="In" Type="String" />
+            <Parameter Name="folio" Mode="In" Type="String" />
+            <Parameter Name="sexo" Mode="In" Type="Boolean" />
+            <Parameter Name="fechaAlta" Mode="In" Type="DateTime" />
+            <Parameter Name="idUsuarioAlta" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="usuario">
           <Key>
@@ -439,7 +559,7 @@ warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a pri
           <Property Name="signed" Type="Boolean" />
           <Property Name="idNuevoEstado" Type="Int32" />
         </EntityType>
-        <EntityType Name="persona">
+        <EntityType Name="EFPersona">
           <Key>
             <PropertyRef Name="id" />
           </Key>
@@ -463,7 +583,7 @@ warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a pri
           <Property Name="sexo" Type="Boolean" />
           <Property Name="fechaAlta" Type="DateTime" Precision="3" />
           <Property Name="idUsuarioAlta" Type="Int32" />
-          <Property Name="razonSocial" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="razonSocial" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -605,9 +725,9 @@ warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="personas">
-            <EntityTypeMapping TypeName="fiscaliaModel.persona">
-              <MappingFragment StoreEntitySet="personas">
+          <EntitySetMapping Name="EFPersonas">
+            <EntityTypeMapping TypeName="fiscaliaModel.EFPersona">
+              <MappingFragment StoreEntitySet="EFPersonas">
                 <ScalarProperty Name="razonSocial" ColumnName="razonSocial" />
                 <ScalarProperty Name="idUsuarioAlta" ColumnName="idUsuarioAlta" />
                 <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
@@ -631,7 +751,61 @@ warning 6002: The table/view 'fiscalia.dbo.Juicios_Registro' does not have a pri
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
+            <EntityTypeMapping TypeName="fiscaliaModel.EFPersona">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="fiscaliaModel.Store.EFinsertPersona">
+                  <ScalarProperty Name="idUsuarioAlta" ParameterName="idUsuarioAlta" />
+                  <ScalarProperty Name="fechaAlta" ParameterName="fechaAlta" />
+                  <ScalarProperty Name="sexo" ParameterName="sexo" />
+                  <ScalarProperty Name="folio" ParameterName="folio" />
+                  <ScalarProperty Name="letra" ParameterName="letra" />
+                  <ScalarProperty Name="tomo" ParameterName="tomo" />
+                  <ScalarProperty Name="fechaInscripcion" ParameterName="fechaInscripcion" />
+                  <ScalarProperty Name="numeroSociedad" ParameterName="numeroSociedad" />
+                  <ScalarProperty Name="registro" ParameterName="registro" />
+                  <ScalarProperty Name="tipoPersoneria" ParameterName="tipoPersoneria" />
+                  <ScalarProperty Name="idTipoSociedad" ParameterName="idTipoSociedad" />
+                  <ScalarProperty Name="nacionalidad" ParameterName="nacionalidad" />
+                  <ScalarProperty Name="idEstadoCivil" ParameterName="idEstadoCivil" />
+                  <ScalarProperty Name="numeroDocumento" ParameterName="numeroDocumento" />
+                  <ScalarProperty Name="cuit" ParameterName="cuit" />
+                  <ScalarProperty Name="idTipoDocumento" ParameterName="idTipoDocumento" />
+                  <ScalarProperty Name="nombre" ParameterName="nombre" />
+                  <ScalarProperty Name="apellido" ParameterName="apellido" />
+                  <ScalarProperty Name="idTipoPersona" ParameterName="idTipoPersona" />
+                  <ResultBinding Name="id" ColumnName="id" />
+                </InsertFunction>
+                <DeleteFunction FunctionName="fiscaliaModel.Store.EFDeletePersona" >
+                  <ScalarProperty Name="id" ParameterName="idPersona" />
+                </DeleteFunction>
+                <UpdateFunction FunctionName="fiscaliaModel.Store.EFUpdatePersona">
+                  <ScalarProperty Name="idUsuarioAlta" ParameterName="idUsuarioAlta" Version="Current" />
+                  <ScalarProperty Name="fechaAlta" ParameterName="fechaAlta" Version="Current" />
+                  <ScalarProperty Name="sexo" ParameterName="sexo" Version="Current" />
+                  <ScalarProperty Name="folio" ParameterName="folio" Version="Current" />
+                  <ScalarProperty Name="letra" ParameterName="letra" Version="Current" />
+                  <ScalarProperty Name="tomo" ParameterName="tomo" Version="Current" />
+                  <ScalarProperty Name="fechaInscripcion" ParameterName="fechaInscripcion" Version="Current" />
+                  <ScalarProperty Name="numeroSociedad" ParameterName="numeroSociedad" Version="Current" />
+                  <ScalarProperty Name="registro" ParameterName="registro" Version="Current" />
+                  <ScalarProperty Name="tipoPersoneria" ParameterName="tipoPersoneria" Version="Current" />
+                  <ScalarProperty Name="idTipoSociedad" ParameterName="idTipoSociedad" Version="Current" />
+                  <ScalarProperty Name="nacionalidad" ParameterName="nacionalidad" Version="Current" />
+                  <ScalarProperty Name="idEstadoCivil" ParameterName="idEstadoCivil" Version="Current" />
+                  <ScalarProperty Name="numeroDocumento" ParameterName="numeroDocumento" Version="Current" />
+                  <ScalarProperty Name="cuit" ParameterName="cuit" Version="Current" />
+                  <ScalarProperty Name="idTipoDocumento" ParameterName="idTipoDocumento" Version="Current" />
+                  <ScalarProperty Name="nombre" ParameterName="nombre" Version="Current" />
+                  <ScalarProperty Name="apellido" ParameterName="apellido" Version="Current" />
+                  <ScalarProperty Name="idTipoPersona" ParameterName="idTipoPersona" Version="Current" />
+                  <ScalarProperty Name="id" ParameterName="id" Version="Current" />
+                </UpdateFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="EFDeletePersona" FunctionName="fiscaliaModel.Store.EFDeletePersona" />
+          <FunctionImportMapping FunctionImportName="EFinsertPersona" FunctionName="fiscaliaModel.Store.EFinsertPersona" />
+          <FunctionImportMapping FunctionImportName="EFUpdatePersona" FunctionName="fiscaliaModel.Store.EFUpdatePersona" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

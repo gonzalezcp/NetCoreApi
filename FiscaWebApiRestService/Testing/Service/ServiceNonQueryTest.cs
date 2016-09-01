@@ -15,10 +15,10 @@ namespace DataModel.Test.Service
         [TestMethod]
         public void CreatePersonas()
         {
-            var mockSet = new Mock<DbSet<persona>>();
+            var mockSet = new Mock<DbSet<EFPersona>>();
             var mockContext = new Mock<fiscaliaEntities>();
-            mockContext.Setup(m => m.personas).Returns(mockSet.Object);
-            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
+            mockContext.Setup(m => m.EFPersonas).Returns(mockSet.Object);
+            mockContext.Setup(m => m.Set<EFPersona>()).Returns(mockSet.Object);
 
             var service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
             var personaNueva = new PersonaModel
@@ -31,7 +31,7 @@ namespace DataModel.Test.Service
             int idPersonaNueva = service.CreatePersonas(personaNueva);
 
             // test verifies that the service added a new Persona
-            mockSet.Verify(m => m.Add(It.IsAny<persona>()), Times.Once());
+            mockSet.Verify(m => m.Add(It.IsAny<EFPersona>()), Times.Once());
 
             // test that service called SaveChanges on the context
             mockContext.Verify(m => m.SaveChanges(), Times.Once());

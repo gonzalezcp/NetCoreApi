@@ -12,7 +12,7 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class persona
+    public partial class EFPersona
     {
         public int id { get; set; }
         public Nullable<int> idTipoPersona { get; set; }

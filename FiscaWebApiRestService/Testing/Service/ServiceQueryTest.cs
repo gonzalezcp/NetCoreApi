@@ -15,23 +15,23 @@ namespace DataModel.Test.Service
     {
         private Mock<fiscaliaEntities> mockContext;
         private EntityFrameworkService<DataModel.fiscaliaEntities> service;
-        private Mock<DbSet<persona>> mockSet;
+        private Mock<DbSet<EFPersona>> mockSet;
         public ServiceQueryTest()
         {
-            var table = new List<persona>();
-            mockSet = EFMockHelper<persona, fiscaliaEntities>.getMockedSet(table);
+            var table = new List<EFPersona>();
+            mockSet = EFMockHelper<EFPersona, fiscaliaEntities>.getMockedSet(table);
             mockContext = new Mock<fiscaliaEntities>();
-            mockContext.Setup(c => c.personas).Returns(mockSet.Object);
+            mockContext.Setup(c => c.EFPersonas).Returns(mockSet.Object);
             // este es porque el Servicio usa Genericos
-            mockContext.Setup(m => m.Set<persona>()).Returns(mockSet.Object);
+            mockContext.Setup(m => m.Set<EFPersona>()).Returns(mockSet.Object);
             service = new EntityFrameworkService<DataModel.fiscaliaEntities>(mockContext.Object);
         }
 
         [TestMethod]
         public void GetPersonaApellidoService()
         {
-            mockContext.Object.personas.Add(
-            new persona
+            mockContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 nombre = "Loco",
                 apellido = "Del Coco",
@@ -39,8 +39,8 @@ namespace DataModel.Test.Service
                 numeroDocumento = 66666
             });
 
-            mockContext.Object.personas.Add(
-            new persona
+            mockContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 nombre = "Chiflado",
                 apellido = "Del Coco",
@@ -55,8 +55,8 @@ namespace DataModel.Test.Service
         [TestMethod]
         public void TestMockSet()
         {
-            mockContext.Object.personas.Add(
-                new persona
+            mockContext.Object.EFPersonas.Add(
+                new EFPersona
                 {
                     id = 1,
                     nombre = "Loco",
@@ -65,8 +65,8 @@ namespace DataModel.Test.Service
                     numeroDocumento = 66666
                 });
 
-            mockContext.Object.personas.Add(
-                new persona
+            mockContext.Object.EFPersonas.Add(
+                new EFPersona
                 {
                     id = 2,
                     nombre = "Chiflado",
@@ -77,28 +77,28 @@ namespace DataModel.Test.Service
                         
 
             //Test
-            Assert.AreEqual(2, mockContext.Object.personas.Count());
+            Assert.AreEqual(2, mockContext.Object.EFPersonas.Count());
             //delete
             bool wasDeleted = service.DeletePersonaById(1);
             //cheque que fueron borradas
-            mockSet.Verify(x => x.Remove(It.IsAny<persona>()));
-            Assert.AreEqual(1, mockContext.Object.personas.Count());
+            mockSet.Verify(x => x.Remove(It.IsAny<EFPersona>()));
+            Assert.AreEqual(1, mockContext.Object.EFPersonas.Count());
         }
 
         [TestMethod]
         public void DeletePersonaService()
         {
-           mockContext.Object.personas.Add(
-           new persona
-            {
+           mockContext.Object.EFPersonas.Add(
+           new EFPersona
+           {
                 id = 1,
                 nombre = "Loco",
                 apellido = "Del Coco",
                 sexo = true,
                 numeroDocumento = 66666
             });
-            mockContext.Object.personas.Add(
-            new persona
+            mockContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 id = 2,
                 nombre = "Chiflado",
@@ -107,17 +107,17 @@ namespace DataModel.Test.Service
                 numeroDocumento = 66666
             });
 
-            Assert.AreEqual(2, mockContext.Object.personas.Count());
+            Assert.AreEqual(2, mockContext.Object.EFPersonas.Count());
             bool wasDeleted = service.DeletePersonaById(1);
             //delete
-            Assert.AreEqual(1, mockContext.Object.personas.Count());
+            Assert.AreEqual(1, mockContext.Object.EFPersonas.Count());
         }
 
         [TestMethod]
         public void UpdatePersonaService()
         {
-            mockContext.Object.personas.Add(
-            new persona
+            mockContext.Object.EFPersonas.Add(
+            new EFPersona
             {
                 id = 37,
                 nombre = "Loco",
@@ -135,7 +135,7 @@ namespace DataModel.Test.Service
                 numeroDocumento = 66666
             };
             bool wasDeleted = service.UpdatePersona(37, personaModel);
-            var nombre = mockContext.Object.personas.Select(p => p.nombre).FirstOrDefault();
+            var nombre = mockContext.Object.EFPersonas.Select(p => p.nombre).FirstOrDefault();
             Assert.AreEqual("Loco modificado", nombre);
         }
 
@@ -153,9 +153,9 @@ namespace DataModel.Test.Service
                 sexo = true,
                 numeroDocumento = 66666
             });
-            int idInsert = mockContext.Object.personas.Select(p => p.id).FirstOrDefault();
+            int idInsert = mockContext.Object.EFPersonas.Select(p => p.id).FirstOrDefault();
             Assert.AreEqual(189, idInsert);
-            Assert.AreEqual(1, mockContext.Object.personas.Count());
+            Assert.AreEqual(1, mockContext.Object.EFPersonas.Count());
         }
 
     }
