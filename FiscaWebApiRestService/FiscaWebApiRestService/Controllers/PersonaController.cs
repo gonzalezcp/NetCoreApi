@@ -1,5 +1,6 @@
 ﻿using BusinessEntities;
 using DataModel.Service;
+using FiscaWebApiRestService.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,20 @@ namespace FiscaWebApiRestService.Controllers
 
         // GET: api/Persona
         [HttpGet]
-        public HttpResponseMessage Get()
+        //public HttpResponseMessage Get()
+        public IHttpActionResult Get()
         {
-            var personas = _service.GetPersonaApellido("Del Coco");
+            var personas = _service.GetPersonaApellido(null);
             if (personas != null)
             {
 
                 var personasModel = personas as List<PersonaModel> ?? personas.ToList();
                 if (personasModel.Any())
-                    return Request.CreateResponse(HttpStatusCode.OK, personasModel);
+                    //return Request.CreateResponse(HttpStatusCode.OK, personasModel);
+                    return Ok(new ResponseApi<List<PersonaModel>>(true, "Lista de Personas", personasModel));
             }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Products not found");
+            //return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Products not found");
+            return Ok(new ResponseApi<List<PersonaModel>>(false));
         }
 
         // GET: api/Persona/5

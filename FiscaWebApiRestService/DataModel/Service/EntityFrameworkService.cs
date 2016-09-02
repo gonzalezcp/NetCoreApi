@@ -34,13 +34,16 @@ namespace DataModel.Service
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BusinessEntities.PersonaModel> GetPersonaApellido(String apellido)
+        public IEnumerable<BusinessEntities.PersonaModel> GetPersonaApellido(String apellido = null)
         {
             var EFPersonas = context.Set<EFPersona>();
-            var personasConApellidoEF = (from p in EFPersonas
-                                        where p.apellido == apellido
-                                            select p).ToList();
-            
+
+            List<EFPersona> personasConApellidoEF;
+            if (apellido == null)
+                personasConApellidoEF = (from p in EFPersonas select p).Take(10).ToList();
+            else
+                personasConApellidoEF = (from p in EFPersonas where p.apellido == apellido select p).ToList();
+
             if (personasConApellidoEF.Any())
             {
                 var personasConApellidoModel = Mapper.Map<List<EFPersona>, List<BusinessEntities.PersonaModel>>(personasConApellidoEF);
@@ -115,7 +118,27 @@ namespace DataModel.Service
                             EFPersonas.Attach(EFPersonaToDelte);
                         }
                         EFPersonas.Remove(EFPersonaToDelte);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.SaveChanges();
+                        }
+                        catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                        {
+                            Exception raise = dbEx;
+                            foreach (var validationErrors in dbEx.EntityValidationErrors)
+                            {
+                                foreach (var validationError in validationErrors.ValidationErrors)
+                                {
+                                    string message = string.Format("{0}:{1}",
+                                        validationErrors.Entry.Entity.ToString(),
+                                        validationError.ErrorMessage);
+                                    // raise a new exception nesting
+                                    // the current instance as InnerException
+                                    raise = new InvalidOperationException(message, raise);
+                                }
+                            }
+                            throw raise;
+                        }
                         transaction.Commit();
                         success = true;
                     }
@@ -132,7 +155,27 @@ namespace DataModel.Service
                 try
                 {
                     EFPersonas.Add(persona);
-                    context.SaveChanges();
+                                            try
+                        {
+                            context.SaveChanges();
+                        }
+                        catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                        {
+                            Exception raise = dbEx;
+                            foreach (var validationErrors in dbEx.EntityValidationErrors)
+                            {
+                                foreach (var validationError in validationErrors.ValidationErrors)
+                                {
+                                    string message = string.Format("{0}:{1}",
+                                        validationErrors.Entry.Entity.ToString(),
+                                        validationError.ErrorMessage);
+                                    // raise a new exception nesting
+                                    // the current instance as InnerException
+                                    raise = new InvalidOperationException(message, raise);
+                                }
+                            }
+                            throw raise;
+                        }
                     transaction.Commit();
                     return persona.id;
                 }
