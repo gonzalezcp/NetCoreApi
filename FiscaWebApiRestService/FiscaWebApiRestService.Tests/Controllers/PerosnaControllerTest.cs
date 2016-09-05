@@ -10,6 +10,9 @@ using BusinessEntities;
 using System.Net;
 using Newtonsoft.Json;
 using System.Data.Entity;
+using FiscaWebApiRestService.Results;
+using System.Web.Http.Results;
+using Newtonsoft.Json.Linq;
 
 namespace FiscaWebApiRestService.Tests.Controllers
 {
@@ -59,15 +62,13 @@ namespace FiscaWebApiRestService.Tests.Controllers
             // Arrange
             var controller = new PersonaController(entityFrameworkService);
             Helper.SetupControllerForTests(controller, HttpMethod.Get, "Persona");
-            var response = controller.Get();
-
+            var response = (OkNegotiatedContentResult<ResponseApi<List<PersonaModel>>>)controller.Get();
             // Assert
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode); // Check the HTTP status
-            var responseString = response.Content.ReadAsStringAsync().Result;
-            var jsonObject = JsonConvert.DeserializeObject<List<PersonaModel>>(responseString);
-            Assert.AreEqual(jsonObject.Any(), true);
+            Assert.AreEqual(true, response.Content.ok); // Check the HTTP status
+            var responseData = response.Content.data;
+            Assert.AreEqual(responseData.Any(), true);
             //chequeo que esten todas las propiedades
-            string nombre = jsonObject[0].nombre;
+            string nombre = responseData[0].nombre;
             Assert.AreEqual(nombre, "Loco");
         }
 
@@ -83,10 +84,10 @@ namespace FiscaWebApiRestService.Tests.Controllers
                 sexo = true,
                 numeroDocumento = 66666
             };
-            var response = controller.Post(personaNueva);
-
+            var response = (OkNegotiatedContentResult<ResponseApi<JObject>>)controller.Post(personaNueva);
             //// Assert
             //este no anda porque no crea la identidad en memoria falta algo del mock
+            Assert.AreEqual(response.Content.ok,true);
             Assert.AreEqual(personaNueva.apellido, mockContext.Object.EFPersonas.Last().apellido);
         }
 

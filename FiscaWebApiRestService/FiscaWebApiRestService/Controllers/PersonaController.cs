@@ -1,6 +1,7 @@
 ﻿using BusinessEntities;
 using DataModel.Service;
 using FiscaWebApiRestService.Results;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,19 +45,41 @@ namespace FiscaWebApiRestService.Controllers
         }
 
         // POST: api/Persona
-        public int Post([FromBody]PersonaModel personaModel)
+        public IHttpActionResult Post([FromBody]PersonaModel personaModel)
         {
-            return _service.CreatePersonas(personaModel);
+            int idPersona;
+            JObject respose;
+            try
+            {
+                idPersona = _service.CreatePersonas(personaModel);
+            }
+            catch (InvalidOperationException ex)
+            {
+                respose = JObject.Parse("{\"Mensaje Error:\"" + ex.Message + "}");
+                return Ok(new ResponseApi<JObject>(true, "Ocurrio un error", respose));
+            }
+            respose = JObject.Parse("{\"idPersona\":" + idPersona.ToString() + "}");
+            return Ok(new ResponseApi<JObject>(true, "persona insertada correctamente", respose));
+
         }
 
         // PUT: api/Persona/5
-        public bool Put(int id, [FromBody]PersonaModel personaModel)
+        public IHttpActionResult Put(int id, [FromBody]PersonaModel personaModel)
         {
-            if (id > 0)
-            {
-                return _service.UpdatePersona(id, personaModel);
+            var wasInserted = false;
+            try {
+                wasInserted = _service.UpdatePersona(id, personaModel);
             }
-            return false;
+            catch(InvalidOperationException ex)
+            {
+                var respose = JObject.Parse("{\"Mensaje Error:\"" + ex.Message + "}");
+                return Ok(new ResponseApi<JObject>(true, "Ocurrio un error", respose));
+            }
+            if (wasInserted)
+            {
+                return Ok(new ResponseApi<Object>(true, "Se inserto una persona correctamente"));
+            }
+            return Ok(new ResponseApi<Object>(true, "No se puedo insertar una persona"));
         }
 
         // DELETE: api/Persona/5
